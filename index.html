@@ -309,8 +309,8 @@
     margin-top: 36px;
   }
   .curve-wrap svg { width: 100%; height: auto; overflow: visible; }
-  .curve-area { fill: rgba(255,255,255,0.06); }
-  .curve-line { fill: none; stroke: rgba(255,255,255,0.35); stroke-width: 1.5; }
+  .curve-area { fill: rgba(45,212,191,0.18); transition: fill 0.4s ease; }
+  .curve-line { fill: none; stroke: rgba(45,212,191,0.55); stroke-width: 1.5; transition: stroke 0.4s ease; }
   .curve-axis { stroke: rgba(255,255,255,0.15); stroke-width: 1; }
   .curve-tick { font-size: 11px; fill: var(--grey); }
   .curve-pin-line { stroke: var(--orange); stroke-width: 1.5; stroke-dasharray: 3 3; }
@@ -503,6 +503,7 @@
   const expandBtnEl = document.getElementById('tickerExpandBtn');
   const longEl = document.getElementById('tickerLong');
   const contactEl = document.getElementById('tickerContact');
+  let fullData = null;
 
   function showSlide(slides, index, onSelect) {
     labelEl.classList.remove('visible');
@@ -529,6 +530,12 @@
       }
 
       contactEl.href = 'https://wa.me/5491164875889?text=' + encodeURIComponent(s.waText || 'Hola! Quiero saber más sobre VOLUM');
+
+      // La curva solo compara precios en USD (pool/consignación); venta directa está en ARS.
+      if (fullData && (s.tab === 'Pool' || s.tab === 'Consignación')) {
+        const rawPrice = s.tab === 'Pool' ? fullData.precio_pool_usd : fullData.precio_consignacion_usd;
+        renderCompare(fullData, rawPrice, 'VOLUM · ' + s.tab);
+      }
 
       labelEl.classList.add('visible');
       priceEl.classList.add('visible');
@@ -580,12 +587,13 @@
     noteEl.textContent = '+ IVA' + (descuento ? ' · ' + descuento + ' menos que el mercado local.' : '.');
   }
 
-  function renderCompare(data) {
+  function renderCompare(data, overridePriceRaw, overrideLabel) {
     const wrapEl = document.getElementById('curveWrap');
     const sourceEl = document.getElementById('compareSource');
     const comparativa = Array.isArray(data.comparativa) ? data.comparativa.slice() : [];
-    const precioVolumRaw = data.precio_pool_usd || data.precio_volum;
+    const precioVolumRaw = overridePriceRaw || data.precio_pool_usd || data.precio_volum;
     const precioVolum = parseFloat(String(precioVolumRaw).replace(',', '.'));
+    const pinLabel = overrideLabel || 'VOLUM';
 
     const marketVals = comparativa
       .map(c => parseFloat(String(c.precio).replace(',', '.')))
@@ -636,7 +644,7 @@
         '<text class="curve-zone-label" x="' + xToPx(mean) + '" y="' + (baseY + 20) + '" text-anchor="middle">rango de mercado</text>' +
         '<line class="curve-pin-line" x1="' + volumPx + '" y1="' + (PAD_T + 4) + '" x2="' + volumPx + '" y2="' + baseY + '"/>' +
         '<circle class="curve-pin-dot" cx="' + volumPx + '" cy="' + baseY + '" r="4"/>' +
-        '<text class="curve-pin-label" x="' + volumPx + '" y="' + (PAD_T - 0) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">VOLUM · USD ' + precioVolumRaw + '</text>' +
+        '<text class="curve-pin-label" x="' + volumPx + '" y="' + (PAD_T - 0) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">' + pinLabel + ' · USD ' + precioVolumRaw + '</text>' +
         '<text class="curve-pin-sub" x="' + volumPx + '" y="' + (baseY + 20) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">tu precio</text>' +
       '</svg>';
 
@@ -647,9 +655,10 @@
   fetch(DATA_URL)
     .then(r => r.json())
     .then(data => {
+      fullData = data;
       startTicker(buildSlides(data));
       renderPool(data);
-      renderCompare(data);
+      renderCompare(data, data.precio_pool_usd || data.precio_volum, 'VOLUM · Pool');
     })
     .catch(() => {
       startTicker([{ label: "Precio", value: "A confirmar", unit: "" }]);
