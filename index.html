@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>VOLUM · Pisos vinílicos SPC directo de fábrica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0b0b0b;
@@ -18,9 +21,12 @@
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   body {
     background: var(--bg);
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     color: var(--white);
     min-height: 100%;
+  }
+  h1, h2, .logo, .ticker-price, .pool-price, .cta, .pool-cta {
+    font-family: 'Barlow Condensed', Arial, sans-serif;
   }
 
   header {
@@ -28,26 +34,50 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px;
-    padding-top: calc(20px + env(safe-area-inset-top, 0px));
+    padding: 28px 24px;
+    padding-top: calc(28px + env(safe-area-inset-top, 0px));
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
   .logo {
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    line-height: 1;
   }
   .logo span { color: var(--orange); }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .header-price {
+    font-size: 11px;
+    color: var(--grey);
+    text-align: right;
+    line-height: 1.3;
+    min-width: 108px;
+  }
+  .header-price .hp-label {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .header-price .hp-label.visible { opacity: 1; }
+  .header-price b {
+    display: block;
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 15px;
+  }
   nav button {
     background: none;
     border: none;
     color: var(--white);
-    font-size: 24px;
+    font-size: 26px;
     cursor: pointer;
   }
 
   .hero {
-    padding: 56px 24px 40px;
+    padding: 72px 24px 56px;
     max-width: 640px;
   }
   .hero h1 {
@@ -58,7 +88,7 @@
   }
   .hero h1 .accent { color: var(--orange); }
   .hero p.sub {
-    margin-top: 18px;
+    margin-top: 24px;
     font-size: 17px;
     color: var(--grey);
     line-height: 1.5;
@@ -67,7 +97,7 @@
 
   /* Ticker de precios */
   .ticker-wrap {
-    margin-top: 32px;
+    margin-top: 44px;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 10px;
     padding: 20px 22px;
@@ -117,10 +147,10 @@
     margin-top: 28px;
     background: var(--white);
     color: var(--orange);
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: 0.3px;
-    padding: 16px 28px;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.2px;
+    padding: 15px 30px;
     border-radius: 8px;
     text-decoration: none;
   }
@@ -143,67 +173,73 @@
 
   /* Sección pool */
   .pool {
-    padding: 48px 24px 60px;
+    padding: 44px 24px 56px;
     max-width: 640px;
     border-top: 1px solid rgba(255,255,255,0.08);
+    opacity: 0.85;
+  }
+  .pool-eyebrow {
+    font-size: 12px;
+    color: var(--grey);
+    margin-bottom: 8px;
   }
   .pool-status {
-    font-size: 15px;
+    font-size: 13px;
     color: var(--grey);
   }
-  .pool-status b { color: var(--white); font-weight: 700; }
+  .pool-status b { color: var(--white); font-weight: 600; }
   .pool-bar {
-    margin-top: 12px;
+    margin-top: 10px;
     width: 100%;
-    height: 6px;
-    border-radius: 3px;
+    max-width: 280px;
+    height: 4px;
+    border-radius: 2px;
     background: rgba(255,255,255,0.12);
     overflow: hidden;
   }
   .pool-bar-fill {
     height: 100%;
     background: var(--orange);
-    border-radius: 3px;
+    border-radius: 2px;
     width: 0%;
     transition: width 0.6s ease;
   }
   .pool-price {
-    margin-top: 28px;
-    font-size: 40px;
-    font-weight: 800;
+    margin-top: 16px;
+    font-size: 24px;
+    font-weight: 700;
     color: var(--orange);
   }
   .pool-price .unit {
-    font-size: 18px;
+    font-size: 13px;
     font-weight: 400;
     color: var(--grey);
   }
   .pool-note {
-    margin-top: 6px;
-    font-size: 14px;
+    margin-top: 4px;
+    font-size: 12px;
     color: var(--grey);
     max-width: 420px;
     line-height: 1.5;
   }
   .pool-cta {
-    display: block;
-    width: 100%;
-    margin-top: 24px;
-    background: var(--orange);
-    color: var(--white);
-    font-weight: 800;
+    display: inline-block;
+    margin-top: 16px;
+    background: transparent;
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    font-weight: 600;
     font-size: 16px;
-    letter-spacing: 0.3px;
-    padding: 18px;
-    border: none;
-    border-radius: 8px;
+    letter-spacing: 0.2px;
+    padding: 10px 20px;
+    border-radius: 6px;
     text-align: center;
     text-decoration: none;
   }
 
   /* Sección comparativa */
   .compare {
-    padding: 48px 24px 60px;
+    padding: 64px 24px 56px;
     max-width: 640px;
     border-top: 1px solid rgba(255,255,255,0.08);
   }
@@ -238,6 +274,49 @@
     line-height: 1.5;
   }
 
+  /* Cómo funciona */
+  .how {
+    padding: 64px 24px 56px;
+    max-width: 640px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .how h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .how-steps {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .how-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .how-step .n {
+    font-family: 'Barlow Condensed', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+    min-width: 32px;
+  }
+  .how-step .t {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .how-step .d {
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    max-width: 440px;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ticker-label, .ticker-price, .pool-bar-fill { transition: none; }
   }
@@ -247,7 +326,10 @@
 
 <header>
   <div class="logo">V<span>O</span>LUM</div>
-  <nav><button aria-label="Menú">&#9776;</button></nav>
+  <div class="header-right">
+    <div class="header-price" id="headerPrice"><span class="hp-label" id="hpLabel">&nbsp;</span><b id="hpValue">&nbsp;</b></div>
+    <nav><button aria-label="Menú">&#9776;</button></nav>
+  </div>
 </header>
 
 <section class="hero">
@@ -263,19 +345,54 @@
   <a href="#contacto" class="cta">Quiero saber más</a>
 </section>
 
-<section class="pool" id="pool">
-  <div class="pool-status" id="poolStatus">Cargando datos del pool…</div>
-  <div class="pool-bar"><div class="pool-bar-fill" id="poolBarFill"></div></div>
-  <div class="pool-price" id="poolPrice"></div>
-  <div class="pool-note" id="poolNote"></div>
-  <a href="https://wa.me/5491164875889?text=Hola%21+Quiero+reservar+lugar+en+el+pool+VOLUM" class="pool-cta">Reservar lugar</a>
-</section>
-
 <section class="compare" id="compare">
   <h2>Análisis de precio: dónde nos situamos.</h2>
   <p class="sub">Relevamiento de 200 publicaciones con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm) frente al precio VOLUM.</p>
   <div class="curve-wrap" id="curveWrap"></div>
   <div class="compare-source" id="compareSource"></div>
+</section>
+
+<section class="how" id="how">
+  <h2>Cómo funciona.</h2>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="n">1</div>
+      <div>
+        <div class="t">Sumás tu obra</div>
+        <div class="d">Nos contás cuántos m² necesitás. No hay compromiso de compra todavía — solo estás en la cuenta.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="n">2</div>
+      <div>
+        <div class="t">Se completa el container</div>
+        <div class="d">Cuando la demanda junta suficiente volumen, cerramos el pedido al fabricante al precio de fábrica.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="n">3</div>
+      <div>
+        <div class="t">Pagás tu parte</div>
+        <div class="d">Confirmás tu lugar con el pago de tus metros. Ahí sí el pedido queda en firme.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="n">4</div>
+      <div>
+        <div class="t">Llega y retirás</div>
+        <div class="d">El container llega a Buenos Aires (fabricación + tránsito + aduana: ~3 meses) y coordinamos la entrega.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pool" id="pool">
+  <div class="pool-eyebrow">Próximo pool (C2)</div>
+  <div class="pool-status" id="poolStatus">Cargando datos del pool…</div>
+  <div class="pool-bar"><div class="pool-bar-fill" id="poolBarFill"></div></div>
+  <div class="pool-price" id="poolPrice"></div>
+  <div class="pool-note" id="poolNote"></div>
+  <a href="https://wa.me/5491164875889?text=Hola%21+Quiero+que+me+avisen+cuando+abra+el+pr%C3%B3ximo+pool+VOLUM" class="pool-cta">Avisarme cuando abra</a>
 </section>
 
 <a class="wa-float" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM" aria-label="WhatsApp">
@@ -284,7 +401,7 @@
 
 <script>
 (function() {
-  const DATA_URL = "https://script.google.com/macros/s/AKfycbyvHoXZTseoBq4q3sbCmWvqlDspaxYu2lYEdhkp1xKAhImnzRHWX4cNWMQ6e6CAz-Fo/exec";
+  const DATA_URL = "https://raw.githubusercontent.com/leandropinero83-rgb/volum-web/main/pool.json?t=" + Date.now();
 
   const labelEl = document.getElementById('tickerLabel');
   const priceEl = document.getElementById('tickerPrice');
@@ -360,6 +477,40 @@
     noteEl.textContent = '+ IVA' + (descuento ? ' · ' + descuento + ' menos que el mercado local.' : '.');
   }
 
+  function renderHeaderPrice(data) {
+    const labelEl = document.getElementById('hpLabel');
+    const valueEl = document.getElementById('hpValue');
+
+    const slides = [];
+    if (data.precio_consignacion_usd) {
+      slides.push({ label: 'Consignación', value: 'USD ' + data.precio_consignacion_usd + '/m²' });
+    }
+    if (data.precio_pool_usd) {
+      slides.push({ label: 'Pool', value: 'USD ' + data.precio_pool_usd + '/m²' });
+    }
+    if (data.precio_venta_directa_ars) {
+      slides.push({ label: 'Venta directa', value: 'ARS ' + data.precio_venta_directa_ars + '/m²' });
+    }
+    if (!slides.length) return;
+
+    let i = 0;
+    function show(idx) {
+      labelEl.classList.remove('visible');
+      setTimeout(() => {
+        labelEl.textContent = slides[idx].label;
+        valueEl.textContent = slides[idx].value;
+        labelEl.classList.add('visible');
+      }, 180);
+    }
+    show(i);
+    if (slides.length > 1) {
+      setInterval(() => {
+        i = (i + 1) % slides.length;
+        show(i);
+      }, 2800);
+    }
+  }
+
   function renderCompare(data) {
     const wrapEl = document.getElementById('curveWrap');
     const sourceEl = document.getElementById('compareSource');
@@ -430,6 +581,7 @@
       startTicker(buildSlides(data));
       renderPool(data);
       renderCompare(data);
+      renderHeaderPrice(data);
     })
     .catch(() => {
       startTicker([{ label: "Precio", value: "A confirmar", unit: "" }]);
