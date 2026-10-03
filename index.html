@@ -326,10 +326,7 @@
 
 <header>
   <div class="logo">V<span>O</span>LUM</div>
-  <div class="header-right">
-    <div class="header-price" id="headerPrice"><span class="hp-label" id="hpLabel">&nbsp;</span><b id="hpValue">&nbsp;</b></div>
-    <nav><button aria-label="Menú">&#9776;</button></nav>
-  </div>
+  <nav><button aria-label="Menú">&#9776;</button></nav>
 </header>
 
 <section class="hero">
@@ -477,40 +474,6 @@
     noteEl.textContent = '+ IVA' + (descuento ? ' · ' + descuento + ' menos que el mercado local.' : '.');
   }
 
-  function renderHeaderPrice(data) {
-    const labelEl = document.getElementById('hpLabel');
-    const valueEl = document.getElementById('hpValue');
-
-    const slides = [];
-    if (data.precio_consignacion_usd) {
-      slides.push({ label: 'Consignación', value: 'USD ' + data.precio_consignacion_usd + '/m²' });
-    }
-    if (data.precio_pool_usd) {
-      slides.push({ label: 'Pool', value: 'USD ' + data.precio_pool_usd + '/m²' });
-    }
-    if (data.precio_venta_directa_ars) {
-      slides.push({ label: 'Venta directa', value: 'ARS ' + data.precio_venta_directa_ars + '/m²' });
-    }
-    if (!slides.length) return;
-
-    let i = 0;
-    function show(idx) {
-      labelEl.classList.remove('visible');
-      setTimeout(() => {
-        labelEl.textContent = slides[idx].label;
-        valueEl.textContent = slides[idx].value;
-        labelEl.classList.add('visible');
-      }, 180);
-    }
-    show(i);
-    if (slides.length > 1) {
-      setInterval(() => {
-        i = (i + 1) % slides.length;
-        show(i);
-      }, 2800);
-    }
-  }
-
   function renderCompare(data) {
     const wrapEl = document.getElementById('curveWrap');
     const sourceEl = document.getElementById('compareSource');
@@ -581,7 +544,6 @@
       startTicker(buildSlides(data));
       renderPool(data);
       renderCompare(data);
-      renderHeaderPrice(data);
     })
     .catch(() => {
       startTicker([{ label: "Precio", value: "A confirmar", unit: "" }]);
