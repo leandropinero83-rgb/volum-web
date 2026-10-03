@@ -318,6 +318,8 @@
   .curve-pin-label { font-size: 13px; font-weight: 800; fill: var(--orange); }
   .curve-pin-sub { font-size: 11px; fill: var(--grey); }
   .curve-zone-label { font-size: 11px; fill: var(--grey); }
+  .curve-tick-mark { stroke: rgba(255,255,255,0.2); stroke-width: 1; }
+  .curve-tick-label { font-size: 10px; fill: rgba(168,168,168,0.75); font-family: 'Inter', Arial, sans-serif; }
   .compare-source {
     margin-top: 18px;
     font-size: 12px;
@@ -608,7 +610,7 @@
     const variance = marketVals.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / marketVals.length;
     const std = Math.sqrt(variance) || mean * 0.08;
 
-    const W = 600, H = 220, PAD_L = 16, PAD_R = 16, PAD_B = 34, PAD_T = 10;
+    const W = 600, H = 246, PAD_L = 16, PAD_R = 16, PAD_B = 60, PAD_T = 10;
     const plotW = W - PAD_L - PAD_R;
     const plotH = H - PAD_T - PAD_B;
 
@@ -636,11 +638,23 @@
     const baseY = PAD_T + plotH;
     const volumPx = xToPx(precioVolum);
 
+    // Escala de precios en USD debajo de la curva
+    const tickCount = 5;
+    let ticksSvg = '';
+    for (let t = 0; t < tickCount; t++) {
+      const tx = xMin + (t / (tickCount - 1)) * (xMax - xMin);
+      const tpx = xToPx(tx);
+      ticksSvg +=
+        '<line class="curve-tick-mark" x1="' + tpx.toFixed(1) + '" y1="' + baseY + '" x2="' + tpx.toFixed(1) + '" y2="' + (baseY + 6) + '"/>' +
+        '<text class="curve-tick-label" x="' + tpx.toFixed(1) + '" y="' + (baseY + 50) + '" text-anchor="middle">USD ' + tx.toFixed(0) + '</text>';
+    }
+
     const svg =
       '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
         '<path class="curve-area" d="' + areaD + '"/>' +
         '<path class="curve-line" d="' + pathD + '"/>' +
         '<line class="curve-axis" x1="' + PAD_L + '" y1="' + baseY + '" x2="' + (W - PAD_R) + '" y2="' + baseY + '"/>' +
+        ticksSvg +
         '<text class="curve-zone-label" x="' + xToPx(mean) + '" y="' + (baseY + 20) + '" text-anchor="middle">rango de mercado</text>' +
         '<line class="curve-pin-line" x1="' + volumPx + '" y1="' + (PAD_T + 4) + '" x2="' + volumPx + '" y2="' + baseY + '"/>' +
         '<circle class="curve-pin-dot" cx="' + volumPx + '" cy="' + baseY + '" r="4"/>' +
