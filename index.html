@@ -86,7 +86,7 @@
     line-height: 1.12;
     letter-spacing: -0.5px;
   }
-  .hero h1 .accent { color: var(--orange); }
+  .hero h1 .accent { color: var(--orange); white-space: nowrap; }
   .hero p.sub {
     margin-top: 24px;
     font-size: 17px;
@@ -358,7 +358,7 @@
   .curve-wrap {
     margin-top: 36px;
   }
-  .curve-wrap svg { width: 100%; height: auto; overflow: visible; }
+  .curve-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
   .curve-area { fill: rgba(45,212,191,0.18); transition: fill 0.4s ease; }
   .curve-line { fill: none; stroke: rgba(45,212,191,0.55); stroke-width: 1.5; transition: stroke 0.4s ease; }
   .curve-axis { stroke: rgba(255,255,255,0.15); stroke-width: 1; }
@@ -426,20 +426,233 @@
   @media (prefers-reduced-motion: reduce) {
     .ticker-label, .ticker-price, .pool-bar-fill { transition: none; }
   }
+  /* Header fijo + menú */
+  html { scroll-behavior: smooth; }
+  header { position: sticky; top: 0; z-index: 20; background: var(--bg); }
+  a.logo { color: var(--white); text-decoration: none; }
+  section { scroll-margin-top: 96px; }
+  #precios { scroll-margin-top: 110px; }
+  .menu-panel {
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: none; flex-direction: column;
+    padding: 6px 24px 22px;
+  }
+  .menu-panel.open { display: flex; }
+  .menu-panel a {
+    font-family: 'Barlow Condensed', Arial, sans-serif;
+    font-size: 22px; font-weight: 700; letter-spacing: 0.3px;
+    color: var(--white); text-decoration: none;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .menu-panel a.menu-wa { color: var(--orange); border-bottom: none; }
+
+  header { flex-wrap: wrap; padding-bottom: 0; }
+  .nav-row {
+    order: 3; flex: 0 0 calc(100% + 48px);
+    margin: 18px -24px 0; padding: 0 24px;
+    display: flex; gap: 22px;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-row::-webkit-scrollbar { display: none; }
+  .nav-row a {
+    font-family: 'Barlow Condensed', Arial, sans-serif;
+    font-size: 18px; font-weight: 600; letter-spacing: 0.2px;
+    color: var(--grey); text-decoration: none; white-space: nowrap;
+    padding: 13px 0 11px; border-bottom: 2px solid transparent;
+  }
+  .nav-row a.active { color: var(--white); border-bottom-color: var(--orange); }
+  section { scroll-margin-top: 136px; }
+  #precios { scroll-margin-top: 150px; }
+
+  /* Pool: participación */
+  .pool { opacity: 1; padding-top: 64px; }
+  .pool h2 { font-size: 24px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+  .pool-eyebrow { text-transform: uppercase; letter-spacing: 1.2px; color: var(--orange); font-weight: 600; }
+  .pool-bar { max-width: 100%; height: 14px; border-radius: 4px; display: flex; margin-top: 14px; }
+  .pool-seg { height: 100%; width: 0%; transition: width 0.6s ease; }
+  .pool-seg-base { background: rgba(255,255,255,0.55); }
+  .pool-seg-res { background: var(--orange); }
+  .pool-legend { margin-top: 14px; }
+  .pool-leg {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--white);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .pool-leg span { flex: 1; }
+  .pool-leg em { display: block; font-style: normal; font-size: 12px; color: var(--grey); margin-top: 2px; }
+  .pool-leg b { font-weight: 600; white-space: nowrap; }
+  .pool-leg .dot { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .dot-base { background: rgba(255,255,255,0.55); }
+  .dot-res { background: var(--orange); }
+  .dot-free { background: rgba(255,255,255,0.12); }
+  .pool-detail.open { max-height: 220px; }
+  .pool-detail-row { max-width: 100%; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .pool-seg { transition: none; }
+  }
+  /* ===== Tabs: letra naranja sobre gris (el naranja pleno queda solo para el CTA) ===== */
+  .ticker-tab {
+    background: #1b1b1b; border: 1px solid #2c2c2c; color: #9a9a9a;
+  }
+  .ticker-tab.active {
+    background: #2a2a2a; border-color: rgba(227,82,5,0.55); color: var(--orange);
+  }
+  .ticker-wrap { background: #141414; border-color: #262626; }
+
+  /* ===== Escritorio ===== */
+  @media (min-width: 900px) {
+    header { flex-wrap: nowrap; padding: 20px max(32px, calc((100% - 1056px) / 2)); gap: 32px; }
+    header nav { display: none; }
+    .menu-panel { display: none !important; }
+    .nav-row {
+      order: 2; flex: 1; margin: 0; padding: 0; border-top: none;
+      justify-content: center; gap: 36px; overflow: visible;
+    }
+    .nav-row a { font-size: 17px; padding: 8px 0; }
+    .hdr-cta {
+      order: 3; display: inline-block;
+      font-family: 'Barlow Condensed', Arial, sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--orange); border: 1px solid var(--orange); border-radius: 6px;
+      padding: 9px 20px; text-decoration: none;
+    }
+    section { scroll-margin-top: 88px; }
+    #precios { scroll-margin-top: 110px; }
+
+    .hero, .compare, .how, .about, .pool { max-width: 1120px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+
+    .hero {
+      padding-top: 96px; padding-bottom: 96px;
+      display: grid; grid-template-columns: 1.05fr 1fr; column-gap: 72px;
+      grid-template-rows: auto 1fr; align-items: start;
+    }
+    .hero h1 { grid-column: 1; grid-row: 1; font-size: 64px; }
+    .hero p.sub { grid-column: 1; grid-row: 2; font-size: 19px; max-width: 520px; }
+    .hero-side { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+    .hero-side .ticker-tabs { margin-top: 0; }
+    .ticker-price { font-size: 40px; }
+    .ticker-wrap { padding: 28px 30px; }
+
+    .compare {
+      padding-top: 72px; padding-bottom: 72px;
+      display: grid; grid-template-columns: 1fr 1.25fr; column-gap: 72px; align-items: start;
+    }
+    .compare h2 { grid-column: 1; grid-row: 1; font-size: 34px; }
+    .compare p.sub { grid-column: 1; grid-row: 2; font-size: 16px; }
+    .compare .curve-wrap { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
+    .compare .compare-source { grid-column: 2; grid-row: 3; }
+
+    .how { padding-top: 72px; padding-bottom: 72px; }
+    .how h2 { font-size: 34px; }
+    .how-steps { flex-direction: row; gap: 40px; margin-top: 40px; }
+    .how-step { flex: 1; flex-direction: column; gap: 12px; }
+    .how-step .n { font-size: 44px; }
+    .how-step .t { font-size: 17px; }
+    .how-step .d { font-size: 15px; }
+    .how .ticker-long { max-width: 720px; }
+
+    .about { padding-top: 72px; padding-bottom: 72px; display: grid; grid-template-columns: 1fr 1.6fr; column-gap: 72px; align-items: start; }
+    .about h2 { font-size: 34px; grid-row: 1 / span 3; }
+    .about .about-text { grid-column: 2; font-size: 17px; max-width: 640px; }
+
+    .pool { padding-top: 88px; padding-bottom: 104px; display: grid; grid-template-columns: 1.3fr 1fr; column-gap: 72px; align-items: start; }
+    .pool h2 { font-size: 34px; }
+    .pool-right { padding-top: 34px; }
+    .pool-right .pool-price { margin-top: 0; font-size: 52px; }
+    .pool-right .pool-note { font-size: 14px; }
+    .pool-right .pool-detail-btn { font-size: 14px; }
+    .pool-right .pool-detail-row { font-size: 14px; }
+    .pool-right .pool-cta { margin-top: 24px; font-size: 18px; padding: 13px 26px; }
+    .pool-bar { height: 16px; }
+  }
+  @media (max-width: 899px) {
+    .hdr-cta { display: none; }
+    .pool-left, .pool-right, .hero-side { display: block; }
+  }
+  /* ===== Detalles de diseño ===== */
+  /* Motivo: tablones de piso. Aparece en la portada (fondo) y en la barra del pool (el container se llena de tablones). */
+  html, body { overflow-x: clip; }
+  .hero { position: relative; isolation: isolate; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='160'><g stroke='rgba(255,255,255,0.05)' stroke-width='1' fill='none'><path d='M0 .5H480M0 40.5H480M0 80.5H480M0 120.5H480'/><path d='M160.5 0V40M400.5 0V40M40.5 40V80M280.5 40V80M120.5 80V120M360.5 80V120M240.5 120V160M0.5 120V160' stroke='rgba(255,255,255,0.03)'/></g></svg>");
+    background-size: 480px 160px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+            mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+  }
+  @media (min-width: 900px) {
+    .hero::before {
+      inset: 0 calc(50% - 50vw) 0 calc(50% - 50vw);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+              mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+    }
+  }
+  .pool-bar { position: relative; background: rgba(255,255,255,0.08); border-radius: 3px; }
+  .pool-bar::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / 24 - 2px), var(--bg) calc(100% / 24 - 2px), var(--bg) calc(100% / 24));
+  }
+  .pool-seg-base { background: rgba(255,255,255,0.5); }
+
+  /* Foco visible por teclado */
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; border-radius: 4px; }
+  .nav-row a:hover, .menu-panel a:hover { color: var(--white); }
+  .ticker-tab:hover:not(.active) { color: var(--white); }
+  .hero p.sub { line-height: 1.55; }
+  /* Pantallas grandes (1500+): más ancho y tipografía mayor */
+  @media (min-width: 1500px) {
+    header { padding-left: max(40px, calc((100% - 1216px) / 2)); padding-right: max(40px, calc((100% - 1216px) / 2)); }
+    .hero, .compare, .how, .about, .pool { max-width: 1280px; padding-left: 32px; padding-right: 32px; }
+    .hero { padding-top: 120px; padding-bottom: 120px; column-gap: 96px; }
+    .hero h1 { font-size: 84px; }
+    .hero p.sub { font-size: 22px; max-width: 580px; }
+    .ticker-price { font-size: 48px; }
+    .ticker-short { font-size: 17px; }
+    .compare h2, .how h2, .about h2, .pool h2 { font-size: 42px; }
+    .compare p.sub { font-size: 18px; }
+    .how-step .t { font-size: 20px; } .how-step .d { font-size: 17px; }
+    .about .about-text { font-size: 19px; }
+    .pool-right .pool-price { font-size: 64px; }
+    .pool-leg { font-size: 16px; }
+    .nav-row a { font-size: 19px; }
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">V<span>O</span>LUM</div>
-  <nav><button aria-label="Menú">&#9776;</button></nav>
+  <a class="logo" href="#top">V<span>O</span>LUM</a>
+  <nav><button id="menuBtn" aria-label="Menú" aria-expanded="false" aria-controls="menuPanel">&#9776;</button></nav>
+  <div class="nav-row" id="navRow">
+    <a href="#precios">Precios</a>
+    <a href="#compare">Comparativa</a>
+    <a href="#how">Cómo funciona</a>
+    <a href="#pool">Pool</a>
+    <a href="#about">Quiénes somos</a>
+  </div>
+  <a class="hdr-cta" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM">Escribinos</a>
+  <div class="menu-panel" id="menuPanel">
+    <a href="#precios">Precios</a>
+    <a href="#compare">Dónde nos situamos</a>
+    <a href="#how">Cómo funciona</a>
+    <a href="#pool">Pool y participación</a>
+    <a href="#about">Quiénes somos</a>
+    <a class="menu-wa" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM">Escribinos por WhatsApp</a>
+  </div>
 </header>
 
-<section class="hero">
+<section class="hero" id="top">
   <h1>Compra segura.<br>Precio real <span class="accent">de fábrica.</span></h1>
   <p class="sub">Importamos pisos vinílicos SPC directo del fabricante en China. Vos accedés al mismo precio que antes solo tenían los grandes importadores — sin intermediarios, sin showroom que pagar.</p>
 
-  <div class="ticker-tabs" id="tickerTabs"></div>
+  <div class="hero-side">
+  <div class="ticker-tabs" id="precios"><span id="tickerTabs" style="display:contents"></span></div>
   <div class="ticker-wrap" id="ticker">
     <div class="ticker-label" id="tickerLabel"></div>
     <div class="ticker-price" id="tickerPrice"></div>
@@ -449,6 +662,7 @@
       <div class="ticker-long" id="tickerLong"></div>
       <a class="ticker-contact" id="tickerContact" href="#">Quiero saber más</a>
     </div>
+  </div>
   </div>
 </section>
 
@@ -467,22 +681,32 @@
   <div class="ticker-long" id="howLong"></div>
 </section>
 
-<section class="about" id="about">
-  <h2>Quiénes somos.</h2>
-  <p class="about-text">VOLUM es un nuevo modelo de importación de materiales para la construcción. En vez de importar, acumular stock y vender con margen de intermediario, agrupamos la demanda real de varias obras y compramos directo de fábrica — sin depósito, sin showroom, sin capital inmovilizado.</p>
-  <p class="about-text">El resultado es simple: el mismo producto que antes solo conseguían los grandes importadores, ahora al alcance de obras chicas y medianas, al precio que realmente vale.</p>
-  <p class="about-text">Detrás está Leandro Piñero, arquitecto con 20 años en construcción, que diseñó el modelo después de ver demasiadas veces cómo una obra chica paga el metro cuadrado más caro que una grande por un solo motivo: nadie importaba en su volumen.</p>
-</section>
+
 
 <section class="pool" id="pool">
-  <div class="pool-eyebrow">Próximo pool (C2)</div>
+<div class="pool-left">
+  <h2>Así va el próximo container.</h2>
   <div class="pool-status" id="poolStatus">Cargando datos del pool…</div>
-  <div class="pool-bar"><div class="pool-bar-fill" id="poolBarFill"></div></div>
+  <div class="pool-bar" role="img" aria-label="Llenado del container">
+    <div class="pool-seg pool-seg-base" id="poolSegBase"></div>
+    <div class="pool-seg pool-seg-res" id="poolSegRes"></div>
+  </div>
+  <div class="pool-legend" id="poolLegend"></div>
+</div>
+<div class="pool-right">
   <div class="pool-price" id="poolPrice"></div>
   <div class="pool-note" id="poolNote"></div>
   <button class="pool-detail-btn" id="poolDetailBtn" type="button">Ver detalle del pool ▾</button>
   <div class="pool-detail" id="poolDetail"></div>
   <a href="https://wa.me/5491164875889?text=Hola%21+Quiero+que+me+avisen+cuando+abra+el+pr%C3%B3ximo+pool+VOLUM" class="pool-cta">Avisarme cuando abra</a>
+</div>
+</section>
+
+<section class="about" id="about">
+  <h2>Quiénes somos.</h2>
+  <p class="about-text">VOLUM es un nuevo modelo de importación de materiales para la construcción. En vez de importar, acumular stock y vender con margen de intermediario, agrupamos la demanda real de varias obras y compramos directo de fábrica — sin depósito, sin showroom, sin capital inmovilizado.</p>
+  <p class="about-text">El resultado es simple: el mismo producto que antes solo conseguían los grandes importadores, ahora al alcance de obras chicas y medianas, al precio que realmente vale.</p>
+  <p class="about-text">Detrás está Leandro Piñero, arquitecto con 20 años en construcción, que diseñó el modelo después de ver demasiadas veces cómo una obra chica paga el metro cuadrado más caro que una grande por un solo motivo: nadie importaba en su volumen.</p>
 </section>
 
 <a class="wa-float" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM" aria-label="WhatsApp">
@@ -497,11 +721,15 @@
   const priceEl = document.getElementById('tickerPrice');
   const tabsEl = document.getElementById('tickerTabs');
 
+  function isNum(v) { return v !== undefined && v !== null && !isNaN(parseFloat(String(v).replace(/\./g, '').replace(',', '.'))); }
+  let PRICE_TAG = '';
+  function priceTxt(cur, v) { return isNum(v) ? cur + ' ' + v : 'A confirmar'; }
+
   function buildSlides(data) {
     const slides = [];
     if (data.precio_pool_usd) {
       slides.push({
-        tab: "Pool", label: "Precio pool", value: "USD " + data.precio_pool_usd, unit: "/ m² sin IVA",
+        tab: "Pool", label: "Precio pool" + PRICE_TAG, value: priceTxt("USD", data.precio_pool_usd), unit: isNum(data.precio_pool_usd) ? "/ m² sin IVA" : "",
         short: "Sumás tus m² a la demanda. Cuando se completa el container, comprás al precio de fábrica.",
         long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: ~3 meses (fabricación + tránsito + aduana).",
         waText: "Hola! Quiero sumarme al pool de VOLUM"
@@ -509,7 +737,7 @@
     }
     if (data.precio_consignacion_usd) {
       slides.push({
-        tab: "Consignación", label: "Venta por consignación", value: "USD " + data.precio_consignacion_usd, unit: "/ m² sin IVA",
+        tab: "Consignación", label: "Venta por consignación" + PRICE_TAG, value: priceTxt("USD", data.precio_consignacion_usd), unit: isNum(data.precio_consignacion_usd) ? "/ m² sin IVA" : "",
         short: "Dejás stock en tu local o depósito. Cobrás cuando se vende — no hay que anticipar capital.",
         long: "Ponemos el producto en tu local, depósito o showroom sin que lo compres. Vos lo exhibís y vendés; cobrás tu margen en cada venta. No hay anticipo ni compra de stock de tu parte — liquidamos periódicamente contra lo efectivamente vendido.",
         waText: "Hola! Quiero saber más sobre la consignación de VOLUM"
@@ -517,7 +745,7 @@
     }
     if (data.precio_venta_directa_ars) {
       slides.push({
-        tab: "Venta directa", label: "Venta directa al público", value: "ARS " + data.precio_venta_directa_ars, unit: "/ m² c/IVA",
+        tab: "Venta directa", label: "Venta directa al público" + PRICE_TAG, value: priceTxt("ARS", data.precio_venta_directa_ars), unit: isNum(data.precio_venta_directa_ars) ? "/ m² c/IVA" : "",
         short: "Comprás directo para tu obra o reventa, con entrega inmediata sobre el stock disponible.",
         waText: "Hola! Quiero comprar directo a VOLUM"
       });
@@ -572,7 +800,7 @@
       // La curva solo compara precios en USD (pool/consignación); venta directa está en ARS.
       if (fullData && (s.tab === 'Pool' || s.tab === 'Consignación')) {
         const rawPrice = s.tab === 'Pool' ? fullData.precio_pool_usd : fullData.precio_consignacion_usd;
-        renderCompare(fullData, rawPrice, 'VOLUM · ' + s.tab);
+        renderCompare(fullData, rawPrice, 'VOLUM ' + s.tab);
       }
 
       labelEl.classList.add('visible');
@@ -603,35 +831,54 @@
   }
 
   function renderPool(data) {
-    const statusEl = document.getElementById('poolStatus');
-    const barFillEl = document.getElementById('poolBarFill');
-    const priceEl2 = document.getElementById('poolPrice');
-    const noteEl = document.getElementById('poolNote');
+    const fmt = n => Math.round(n).toLocaleString('es-AR');
+    const num = v => { const n = Number(v); return isNaN(n) ? null : n; };
 
-    const metros = Number(data.metros);
-    const metrosTotal = Number(data.metros_total);
+    const total = num(data.metros_total);
+    let base = num(data.metros_base);
+    let reservados = num(data.metros_reservados);
+    const participantes = num(data.participantes);
+    // Compatibilidad: si no están los campos nuevos, se deduce de "metros" (libres)
+    if (base === null) base = 0;
+    if (reservados === null) {
+      const libresOld = num(data.metros);
+      reservados = (total !== null && libresOld !== null) ? Math.max(0, total - libresOld - base) : 0;
+    }
     const cierre = data.fecha_cierre || 'a confirmar';
     const precio = data.precio_pool_usd || data.precio_volum || 'a confirmar';
     const descuento = data.descuento || '';
 
-    statusEl.innerHTML = 'Pool activo · quedan <b>' + (isNaN(metros) ? '—' : metros.toLocaleString('es-AR')) + ' m²</b> · cierre <b>' + cierre + '</b>';
 
-    if (!isNaN(metros) && !isNaN(metrosTotal) && metrosTotal > 0) {
-      const vendidoPct = Math.max(0, Math.min(100, ((metrosTotal - metros) / metrosTotal) * 100));
-      barFillEl.style.width = vendidoPct + '%';
+    const statusEl = document.getElementById('poolStatus');
+    if (total === null || total <= 0) {
+      statusEl.textContent = 'Datos del pool a confirmar.';
+    } else {
+      const ocupados = Math.min(total, base + reservados);
+      const libres = total - ocupados;
+      const pct = n => Math.max(0, Math.min(100, (n / total) * 100));
+      statusEl.innerHTML = '<b>' + Math.round(pct(ocupados)) + '%</b> del container cubierto. Quedan <b>' + fmt(libres) + ' m²</b>. Cierre: <b>' + cierre + '</b>.';
+      document.getElementById('poolSegBase').style.width = pct(base) + '%';
+      document.getElementById('poolSegRes').style.width = pct(Math.min(reservados, total - base)) + '%';
+
+      const obras = (participantes !== null && participantes > 0)
+        ? 'Obras sumadas (' + participantes + ')' : 'Obras sumadas';
+      document.getElementById('poolLegend').innerHTML =
+        '<div class="pool-leg"><i class="dot dot-base"></i><span>Base VOLUM <em>metros propios, fijos desde el día uno</em></span><b>' + fmt(base) + ' m²</b></div>' +
+        '<div class="pool-leg"><i class="dot dot-res"></i><span>' + obras + ' <em>reservas con seña</em></span><b>' + fmt(reservados) + ' m²</b></div>' +
+        '<div class="pool-leg"><i class="dot dot-free"></i><span>Disponible</span><b>' + fmt(libres) + ' m²</b></div>';
     }
 
-    priceEl2.innerHTML = 'USD ' + precio + ' <span class="unit">/ m²</span>';
-    noteEl.textContent = '+ IVA' + (descuento ? ' · ' + descuento + ' menos que el mercado local.' : '.');
+    const hayPrecio = isNum(precio);
+    document.getElementById('poolPrice').innerHTML = hayPrecio ? 'USD ' + precio + ' <span class="unit">/ m²</span>' : 'Precio a confirmar';
+    document.getElementById('poolNote').textContent = (hayPrecio ? '+ IVA' + (data.precio_estado ? '. Precio ' + data.precio_estado + ': se confirma al cerrar el costo del container' : '') : 'Se publica con el costo cerrado') + (descuento ? '. Objetivo: ' + descuento + ' menos que el mercado local.' : '.');
 
     const detailBtn = document.getElementById('poolDetailBtn');
     const detailEl = document.getElementById('poolDetail');
-    const comprometidos = (!isNaN(metros) && !isNaN(metrosTotal)) ? (metrosTotal - metros) : null;
-
     detailEl.innerHTML =
-      '<div class="pool-detail-row"><span>Metros comprometidos</span><b>' + (comprometidos !== null ? comprometidos.toLocaleString('es-AR') + ' m²' : '—') + '</b></div>' +
+      '<div class="pool-detail-row"><span>Container</span><b>' + (total !== null ? fmt(total) + ' m²' : '—') + '</b></div>' +
+      (data.participacion_minima ? '<div class="pool-detail-row"><span>Participación mínima</span><b>' + data.participacion_minima + '</b></div>' : '') +
       '<div class="pool-detail-row"><span>Fecha de inicio</span><b>' + (data.fecha_inicio || '—') + '</b></div>' +
-      '<div class="pool-detail-row"><span>Fecha de cierre</span><b>' + (data.fecha_cierre || 'a confirmar') + '</b></div>' +
+      '<div class="pool-detail-row"><span>Fecha de cierre</span><b>' + cierre + '</b></div>' +
       '<div class="pool-detail-row"><span>Entrega estimada</span><b>' + (data.fecha_entrega || '—') + '</b></div>';
 
     detailBtn.onclick = () => {
@@ -639,6 +886,14 @@
       detailBtn.textContent = isOpen ? 'Ocultar detalle ▴' : 'Ver detalle del pool ▾';
     };
   }
+
+  let lastCompare = null;
+  let lastNarrow = null;
+  window.addEventListener('resize', () => {
+    const w = document.getElementById('curveWrap').clientWidth;
+    const n = w > 0 && w < 520;
+    if (lastCompare && n !== lastNarrow) { lastNarrow = n; renderCompare.apply(null, lastCompare); }
+  });
 
   function renderCompare(data, overridePriceRaw, overrideLabel) {
     const wrapEl = document.getElementById('curveWrap');
@@ -652,20 +907,23 @@
       .map(c => parseFloat(String(c.precio).replace(',', '.')))
       .filter(v => !isNaN(v));
 
-    if (marketVals.length < 2 || isNaN(precioVolum)) {
-      wrapEl.innerHTML = '<p class="sub">Precio a confirmar.</p>';
+    if (marketVals.length < 2) {
+      wrapEl.innerHTML = '<p class="sub">Relevamiento en curso.</p>';
       return;
     }
+    const hayPin = !isNaN(precioVolum);
 
     const mean = marketVals.reduce((a, b) => a + b, 0) / marketVals.length;
     const variance = marketVals.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / marketVals.length;
     const std = Math.sqrt(variance) || mean * 0.08;
 
-    const W = 600, H = 246, PAD_L = 16, PAD_R = 16, PAD_B = 60, PAD_T = 10;
+    lastCompare = [data, overridePriceRaw, overrideLabel];
+    const narrow = wrapEl.clientWidth > 0 && wrapEl.clientWidth < 520;
+    const W = narrow ? 340 : 600, H = narrow ? 230 : 246, PAD_L = 16, PAD_R = 16, PAD_B = 60, PAD_T = 18;
     const plotW = W - PAD_L - PAD_R;
     const plotH = H - PAD_T - PAD_B;
 
-    const xMin = Math.min(precioVolum, mean - 3 * std) * 0.92;
+    const xMin = (hayPin ? Math.min(precioVolum, mean - 3 * std) : mean - 3 * std) * 0.92;
     const xMax = (mean + 3 * std) * 1.04;
 
     function xToPx(x) { return PAD_L + ((x - xMin) / (xMax - xMin)) * plotW; }
@@ -687,7 +945,7 @@
     areaD += 'L' + xToPx(xMax).toFixed(1) + ',' + (PAD_T + plotH) + ' L' + xToPx(xMin).toFixed(1) + ',' + (PAD_T + plotH) + ' Z';
 
     const baseY = PAD_T + plotH;
-    const volumPx = xToPx(precioVolum);
+    const volumPx = hayPin ? xToPx(precioVolum) : 0;
 
     // Escala de precios en USD debajo de la curva
     const tickCount = 5;
@@ -701,20 +959,22 @@
     }
 
     const svg =
-      '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
+      '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
         '<path class="curve-area" d="' + areaD + '"/>' +
         '<path class="curve-line" d="' + pathD + '"/>' +
         '<line class="curve-axis" x1="' + PAD_L + '" y1="' + baseY + '" x2="' + (W - PAD_R) + '" y2="' + baseY + '"/>' +
         ticksSvg +
         '<text class="curve-zone-label" x="' + xToPx(mean) + '" y="' + (baseY + 20) + '" text-anchor="middle">rango de mercado</text>' +
+        (hayPin ? (
         '<line class="curve-pin-line" x1="' + volumPx + '" y1="' + (PAD_T + 4) + '" x2="' + volumPx + '" y2="' + baseY + '"/>' +
         '<circle class="curve-pin-dot" cx="' + volumPx + '" cy="' + baseY + '" r="4"/>' +
-        '<text class="curve-pin-label" x="' + volumPx + '" y="' + (PAD_T - 0) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">' + pinLabel + ' · USD ' + precioVolumRaw + '</text>' +
-        '<text class="curve-pin-sub" x="' + volumPx + '" y="' + (baseY + 20) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">tu precio</text>' +
+        '<text class="curve-pin-label" x="' + volumPx + '" y="' + (PAD_T - 0) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">' + pinLabel + ': USD ' + precioVolumRaw + '</text>' +
+        '<text class="curve-pin-sub" x="' + volumPx + '" y="' + (baseY + 20) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">tu precio</text>'
+        ) : '') +
       '</svg>';
 
     wrapEl.innerHTML = svg;
-    sourceEl.textContent = '';
+    sourceEl.textContent = hayPin ? (data.precio_estado ? 'Precio VOLUM ' + data.precio_estado + ', sin IVA.' : '') : 'Precio VOLUM a confirmar: se marca sobre la curva cuando cierre el costo del container.';
   }
 
   const HOW_DATA = [
@@ -786,18 +1046,48 @@
   }
   renderHow(0);
 
+  const menuBtn = document.getElementById('menuBtn');
+  const menuPanel = document.getElementById('menuPanel');
+  function setMenu(open) {
+    menuPanel.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuBtn.innerHTML = open ? '&times;' : '&#9776;';
+  }
+  menuBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(!menuPanel.classList.contains('open')); });
+  menuPanel.addEventListener('click', e => { if (e.target.tagName === 'A') setMenu(false); });
+  document.addEventListener('click', e => { if (!menuPanel.contains(e.target)) setMenu(false); });
+
+  const navLinks = Array.from(document.querySelectorAll('#navRow a'));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const id = en.target.id === 'top' ? 'precios' : en.target.id;
+        navLinks.forEach(a => {
+          const on = a.getAttribute('href') === '#' + id;
+          a.classList.toggle('active', on);
+          if (on && a.scrollIntoView) a.parentNode.scrollTo({ left: a.offsetLeft - 24, behavior: 'smooth' });
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    ['top', 'compare', 'how', 'pool', 'about'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+  }
+
+  // Copia de respaldo de pool.json: se usa solo si no se puede leer el archivo vivo.
+  const FALLBACK = {"pool_nombre": "Próximo pool", "metros": 2127, "metros_total": 3127, "metros_base": 1000, "metros_reservados": 0, "participantes": 0, "fecha_cierre": "a confirmar", "fecha_inicio": "oct 2026", "fecha_entrega": "ene 2027", "descuento": "20 a 35%", "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm). Abril 2026.", "precio_volum": "a confirmar", "fee_reserva": "100", "faq_precio_85": "a confirmar", "faq_precio_100": "a confirmar", "precio_pool_usd": "15", "precio_consignacion_usd": "16", "precio_venta_directa_ars": "37.500", "tabla": [{"producto": "Piso SPC 4mm / m²", "mercado": "USD 20,50", "volum": "a confirmar + IVA", "ahorro": "20–35%"}, {"producto": "Revestimiento WPC / m²", "mercado": "USD 18,00", "volum": "Próximo pool", "ahorro": "—"}, {"producto": "Cerradura smart / u.", "mercado": "USD 85,00", "volum": "Próximo pool", "ahorro": "—"}], "comparativa": [{"ref": "Minorista promedio", "precio": "19,83"}, {"ref": "Pisarás (volumen)", "precio": "18,18"}, {"ref": "Multimart", "precio": "17,77"}, {"ref": "Mercado promedio", "precio": "16,94"}], "participacion_minima": "a confirmar", "precio_estado": "de referencia"};
+
+  function renderAll(data) {
+    fullData = data;
+    PRICE_TAG = data.precio_estado ? ' ' + data.precio_estado : '';
+    startTicker(buildSlides(data));
+    renderPool(data);
+    renderCompare(data, data.precio_pool_usd || data.precio_volum, 'VOLUM Pool');
+  }
+
   fetch(DATA_URL)
-    .then(r => r.json())
-    .then(data => {
-      fullData = data;
-      startTicker(buildSlides(data));
-      renderPool(data);
-      renderCompare(data, data.precio_pool_usd || data.precio_volum, 'VOLUM · Pool');
-    })
-    .catch(() => {
-      startTicker([{ label: "Precio", value: "A confirmar", unit: "" }]);
-      document.getElementById('poolStatus').textContent = 'No se pudo cargar la información del pool.';
-    });
+    .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(renderAll)
+    .catch(() => renderAll(FALLBACK));
 })();
 </script>
 
