@@ -338,12 +338,15 @@
     font-weight: 700;
     line-height: 1.2;
   }
+  #howTabs { margin-top: 28px; }
   .how-steps {
-    margin-top: 36px;
+    margin-top: 32px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 28px;
   }
+  #howExpandBtn { margin-top: 8px; }
+  #howLong { max-width: 460px; }
   .how-step {
     display: flex;
     gap: 16px;
@@ -408,36 +411,10 @@
 
 <section class="how" id="how">
   <h2>Cómo funciona.</h2>
-  <div class="how-steps">
-    <div class="how-step">
-      <div class="n">1</div>
-      <div>
-        <div class="t">Sumás tu obra</div>
-        <div class="d">Nos contás cuántos m² necesitás. No hay compromiso de compra todavía — solo estás en la cuenta.</div>
-      </div>
-    </div>
-    <div class="how-step">
-      <div class="n">2</div>
-      <div>
-        <div class="t">Se completa el container</div>
-        <div class="d">Cuando la demanda junta suficiente volumen, cerramos el pedido al fabricante al precio de fábrica.</div>
-      </div>
-    </div>
-    <div class="how-step">
-      <div class="n">3</div>
-      <div>
-        <div class="t">Pagás tu parte</div>
-        <div class="d">Confirmás tu lugar con el pago de tus metros. Ahí sí el pedido queda en firme.</div>
-      </div>
-    </div>
-    <div class="how-step">
-      <div class="n">4</div>
-      <div>
-        <div class="t">Llega y retirás</div>
-        <div class="d">El container llega a Buenos Aires (fabricación + tránsito + aduana: ~3 meses) y coordinamos la entrega.</div>
-      </div>
-    </div>
-  </div>
+  <div class="ticker-tabs" id="howTabs"></div>
+  <div class="how-steps" id="howSteps"></div>
+  <button class="ticker-expand-btn" id="howExpandBtn" type="button">Ampliar ▾</button>
+  <div class="ticker-long" id="howLong"></div>
 </section>
 
 <section class="pool" id="pool">
@@ -665,6 +642,75 @@
     wrapEl.innerHTML = svg;
     sourceEl.textContent = '';
   }
+
+  const HOW_DATA = [
+    {
+      tab: "Pool",
+      steps: [
+        { t: "Sumás tu obra", d: "Nos contás cuántos m² necesitás. No hay compromiso de compra todavía — solo estás en la cuenta." },
+        { t: "Se completa el container", d: "Cuando la demanda junta suficiente volumen, cerramos el pedido al fabricante al precio de fábrica." },
+        { t: "Pagás tu parte", d: "Confirmás tu lugar con el pago de tus metros. Ahí sí el pedido queda en firme." },
+        { t: "Llega y retirás", d: "El container llega a Buenos Aires (fabricación + tránsito + aduana: ~3 meses) y coordinamos la entrega." }
+      ],
+      long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: ~3 meses (fabricación + tránsito + aduana)."
+    },
+    {
+      tab: "Consignación",
+      steps: [
+        { t: "Evaluamos tu local", d: "Rubro, ubicación y rotación esperada — vemos si tu punto de venta encaja con el perfil del producto." },
+        { t: "Dejamos el stock", d: "Ponemos el producto en tu local o depósito, sin que lo compres por adelantado." },
+        { t: "Vos vendés", d: "Exhibís y vendés al precio acordado. El stock sigue siendo nuestro hasta que se vende." },
+        { t: "Liquidamos", d: "Periódicamente te cobramos solo lo que efectivamente se vendió, nunca el stock completo." }
+      ],
+      long: "Ponemos el producto en tu local, depósito o showroom sin que lo compres. Vos lo exhibís y vendés; cobrás tu margen en cada venta. No hay anticipo ni compra de stock de tu parte — liquidamos periódicamente contra lo efectivamente vendido."
+    },
+    {
+      tab: "Venta directa",
+      steps: [
+        { t: "Nos contás tu necesidad", d: "Cuántos m² y para cuándo los necesitás." },
+        { t: "Confirmamos stock", d: "Te decimos si hay disponible para entrega inmediata." },
+        { t: "Pagás y coordinamos entrega", d: "Sin esperar a que se complete ningún pool — es venta directa sobre lo que ya tenemos." }
+      ],
+      long: null
+    }
+  ];
+
+  function renderHow(activeIndex) {
+    const tabsEl = document.getElementById('howTabs');
+    const stepsEl = document.getElementById('howSteps');
+    const expandBtnEl = document.getElementById('howExpandBtn');
+    const longEl = document.getElementById('howLong');
+
+    tabsEl.innerHTML = '';
+    HOW_DATA.forEach((m, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ticker-tab' + (i === activeIndex ? ' active' : '');
+      btn.textContent = m.tab;
+      btn.type = 'button';
+      btn.addEventListener('click', () => renderHow(i));
+      tabsEl.appendChild(btn);
+    });
+
+    const modalidad = HOW_DATA[activeIndex];
+    stepsEl.innerHTML = modalidad.steps.map((s, i) =>
+      '<div class="how-step"><div class="n">' + (i + 1) + '</div><div><div class="t">' + s.t + '</div><div class="d">' + s.d + '</div></div></div>'
+    ).join('');
+
+    longEl.textContent = modalidad.long || '';
+    longEl.classList.remove('open');
+
+    if (modalidad.long) {
+      expandBtnEl.style.display = 'inline-block';
+      expandBtnEl.textContent = 'Ampliar ▾';
+      expandBtnEl.onclick = () => {
+        const isOpen = longEl.classList.toggle('open');
+        expandBtnEl.textContent = isOpen ? 'Ver menos ▴' : 'Ampliar ▾';
+      };
+    } else {
+      expandBtnEl.style.display = 'none';
+    }
+  }
+  renderHow(0);
 
   fetch(DATA_URL)
     .then(r => r.json())
