@@ -12,7 +12,7 @@
     --bg: #0b0b0b;
     --orange: #e35205;
     --white: #ffffff;
-    --grey: #a8a8a8;
+    --grey: #c4c4c4;
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -369,11 +369,11 @@
   .curve-pin-sub { font-size: 11px; fill: var(--grey); }
   .curve-zone-label { font-size: 11px; fill: var(--grey); }
   .curve-tick-mark { stroke: rgba(255,255,255,0.2); stroke-width: 1; }
-  .curve-tick-label { font-size: 10px; fill: rgba(168,168,168,0.75); font-family: 'Inter', Arial, sans-serif; }
+  .curve-tick-label { font-size: 10px; fill: rgba(200,200,200,0.85); font-family: 'Inter', Arial, sans-serif; }
   .compare-source {
     margin-top: 18px;
     font-size: 12px;
-    color: rgba(168,168,168,0.7);
+    color: rgba(200,200,200,0.82);
     line-height: 1.5;
   }
 
@@ -499,7 +499,7 @@
   }
   /* ===== Tabs: letra naranja sobre gris (el naranja pleno queda solo para el CTA) ===== */
   .ticker-tab {
-    background: #1b1b1b; border: 1px solid #2c2c2c; color: #9a9a9a;
+    background: #1b1b1b; border: 1px solid #2c2c2c; color: #c4c4c4;
   }
   .ticker-tab.active {
     background: #2a2a2a; border-color: rgba(227,82,5,0.55); color: var(--orange);
@@ -676,7 +676,7 @@
   .ficha { margin-top: 24px; }
   .ficha-row { display: flex; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--grey); padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
   .ficha-row b { color: var(--white); font-weight: 600; text-align: right; }
-  .corte-nota { margin-top: 12px; font-size: 12px; color: rgba(168,168,168,0.7); }
+  .corte-nota { margin-top: 12px; font-size: 12px; color: rgba(200,200,200,0.82); }
   @media (min-width: 900px) {
     .producto { max-width: 1120px; margin: 0 auto; padding: 72px 32px; }
     .producto h2 { font-size: 34px; }
@@ -744,7 +744,7 @@
   .z-links a, .z-contact a { font-size: 15px; color: var(--grey); text-decoration: none; padding: 7px 0; }
   .z-links a:hover, .z-contact a:hover, .z-legal a:hover { color: var(--white); }
   .z-contact a { color: var(--white); font-weight: 600; }
-  .z-legal { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; max-width: 1120px; margin: 32px auto 0; padding-top: 20px; border-top: 1px solid #262626; font-size: 12px; color: rgba(168,168,168,0.8); }
+  .z-legal { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; max-width: 1120px; margin: 32px auto 0; padding-top: 20px; border-top: 1px solid #262626; font-size: 12px; color: rgba(200,200,200,0.88); }
   .z-legal a { color: var(--grey); text-decoration: none; }
   .z-legal #zLegal:empty { display: none; }
   @media (min-width: 900px) {
@@ -758,6 +758,20 @@
     .z-links a, .z-contact a { font-size: 17px; }
     .z-legal { font-size: 13px; }
   }
+
+  /* ===== Pie: modalidades y redes ===== */
+  .z-in { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+  .z-brand { grid-column: 1 / -1; }
+  .z-group { display: flex; flex-direction: column; gap: 2px; }
+  .z-group h3 { font-family: 'Inter', Arial, sans-serif; font-size: 13px; font-weight: 600; color: rgba(200,200,200,0.85); margin-bottom: 6px; }
+  .z-group a { font-size: 15px; color: var(--white); font-weight: 600; text-decoration: none; padding: 7px 0; }
+  .z-group a:hover { color: var(--orange); }
+  .z-group a.sin-enlace { color: rgba(200,200,200,0.73); font-weight: 400; pointer-events: none; cursor: default; }
+  @media (min-width: 900px) {
+    .z-in { grid-template-columns: 1.3fr 1fr 1fr; column-gap: 72px; }
+    .z-brand { grid-column: auto; }
+  }
+  @media (min-width: 1500px) { .z-group a { font-size: 17px; } .z-group h3 { font-size: 14px; } }
 </style>
 </head>
 <body>
@@ -825,11 +839,11 @@
       <rect x="56" y="40" width="160" height="10" fill="#9a7048"/>
       <rect x="56" y="50" width="160" height="120" fill="#6b6f73"/>
       <rect x="56" y="170" width="160" height="44" fill="#101010" stroke="#4a4a4a" stroke-width="1"/>
-      <g stroke="#7a7a7a" stroke-width="1" fill="none">
+      <g stroke="#a8a8a8" stroke-width="1" fill="none">
         <path d="M48 16H44V170H48"/><path d="M48 172H44V214H48"/>
         <path d="M216 20L238 20"/><path d="M216 32L238 52"/><path d="M216 45L238 84"/><path d="M216 110L238 116"/><path d="M216 192L238 192"/>
       </g>
-      <g font-family="Inter, Arial, sans-serif" font-size="11" fill="#a8a8a8" text-anchor="middle">
+      <g font-family="Inter, Arial, sans-serif" font-size="11" fill="#d2d2d2" text-anchor="middle">
         <text transform="translate(30 93) rotate(-90)">4 mm</text>
         <text transform="translate(30 193) rotate(-90)">1 mm</text>
       </g>
@@ -906,21 +920,21 @@
       <a class="logo" href="#top" aria-label="VOLUM, volver arriba">V<span>O</span>LUM</a>
       <p>Compra agrupada de materiales para obra, directo de fábrica.</p>
     </div>
-    <nav class="z-links" aria-label="Secciones">
-      <a href="#precios">Precios</a>
-      <a href="#compare">Comparativa</a>
-      <a href="#producto">Producto</a>
-      <a href="#how">Cómo funciona</a>
-      <a href="#pool">Pool</a>
-      <a href="#about">Quiénes somos</a>
-    </nav>
-    <div class="z-contact">
-      <a href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM">WhatsApp</a>
-      <a href="https://www.instagram.com/volum_pools" rel="noopener">Instagram @volum_pools</a>
+    <div class="z-group">
+      <h3>Modalidades</h3>
+      <a href="#pool" data-ir="pool">Pool</a>
+      <a href="#precios" data-ir="tab" data-tab="Consignación">Consignación</a>
+      <a href="#precios" data-ir="tab" data-tab="Venta directa">Venta directa</a>
+    </div>
+    <div class="z-group">
+      <h3>Redes</h3>
+      <a data-red="instagram" href="https://www.instagram.com/volum_pools" target="_blank" rel="noopener">Instagram</a>
+      <a data-red="facebook" class="sin-enlace">Facebook</a>
+      <a data-red="tiktok" class="sin-enlace">TikTok</a>
     </div>
   </div>
   <div class="z-legal">
-    <span>© 2026 VOLUM. volumpools.com</span>
+    <span>© 2026 VOLUM. Todos los derechos reservados. Buenos Aires, Argentina.</span>
     <span id="zLegal"></span>
     <a href="#top">Volver arriba</a>
   </div>
@@ -1357,12 +1371,28 @@
     }
   }, { passive: true });
 
+  // Pie: "Consignación" y "Venta directa" llevan a los precios y abren esa pestaña
+  document.querySelectorAll('[data-ir="tab"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const dest = document.getElementById('precios');
+      if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const nombre = a.getAttribute('data-tab');
+      const btn = Array.from(document.querySelectorAll('#precios .ticker-tab')).find(b => b.textContent.trim() === nombre);
+      if (btn) btn.click();
+    });
+  });
+
   // Copia de respaldo de pool.json: se usa solo si no se puede leer el archivo vivo.
   const FALLBACK = {"pool_nombre": "Próximo pool", "metros": 2127, "metros_total": 3127, "metros_base": 1000, "metros_reservados": 0, "participantes": 0, "fecha_cierre": "a confirmar", "fecha_inicio": "oct 2026", "fecha_entrega": "ene 2027", "descuento": "20 a 35%", "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm). Abril 2026.", "precio_volum": "a confirmar", "fee_reserva": "100", "faq_precio_85": "a confirmar", "faq_precio_100": "a confirmar", "precio_pool_usd": "15", "precio_consignacion_usd": "16", "precio_venta_directa_ars": "37.500", "tabla": [{"producto": "Piso SPC 4mm / m²", "mercado": "USD 20,50", "volum": "a confirmar + IVA", "ahorro": "20–35%"}, {"producto": "Revestimiento WPC / m²", "mercado": "USD 18,00", "volum": "Próximo pool", "ahorro": "—"}, {"producto": "Cerradura smart / u.", "mercado": "USD 85,00", "volum": "Próximo pool", "ahorro": "—"}], "comparativa": [{"ref": "Minorista promedio", "precio": "19,83"}, {"ref": "Pisarás (volumen)", "precio": "18,18"}, {"ref": "Multimart", "precio": "17,77"}, {"ref": "Mercado promedio", "precio": "16,94"}], "participacion_minima": "a confirmar", "precio_estado": "de referencia"};
 
   function renderAll(data) {
     fullData = data;
     const zl = document.getElementById('zLegal'); if (zl && data.legal) zl.textContent = data.legal;
+    document.querySelectorAll('[data-red]').forEach(a => {
+      const url = data.redes && data.redes[a.getAttribute('data-red')];
+      if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.classList.remove('sin-enlace'); }
+    });
     PRICE_TAG = data.precio_estado ? ' ' + data.precio_estado : '';
     currentSlides = buildSlides(data);
     startTicker(currentSlides);
