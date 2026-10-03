@@ -150,6 +150,17 @@
     border-color: var(--orange);
   }
   .ticker-wrap { margin-top: 12px; }
+  .ticker-desc {
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.5;
+    max-width: 440px;
+    min-height: 42px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .ticker-desc.visible { opacity: 1; }
 
   .cta {
     display: inline-block;
@@ -347,8 +358,9 @@
     <div class="ticker-label" id="tickerLabel"></div>
     <div class="ticker-price" id="tickerPrice"></div>
   </div>
+  <div class="ticker-desc" id="tickerDesc"></div>
 
-  <a href="#contacto" class="cta">Quiero saber más</a>
+  <a href="#contacto" class="cta" id="heroCta">Quiero saber más</a>
 </section>
 
 <section class="compare" id="compare">
@@ -413,6 +425,17 @@
   const priceEl = document.getElementById('tickerPrice');
   const tabsEl = document.getElementById('tickerTabs');
 
+  const MODALIDAD_DESC = {
+    "Pool": "Sumás tu obra a una compra conjunta. Accedés al precio de fábrica sin poner capital hasta que se completa y cierra el container.",
+    "Consignación": "Nosotros ponemos el stock en tu local. Vendés al público y nos liquidás solo lo que efectivamente vendiste — sin inmovilizar capital.",
+    "Venta directa": "Comprás directo para tu obra o reventa, con entrega desde el stock disponible. Ideal si necesitás los metros ya."
+  };
+  const MODALIDAD_WA_TEXT = {
+    "Pool": "Hola! Quiero sumarme al pool de VOLUM",
+    "Consignación": "Hola! Quiero info sobre vender VOLUM por consignación",
+    "Venta directa": "Hola! Quiero comprar VOLUM por venta directa"
+  };
+
   function buildSlides(data) {
     const slides = [];
     if (data.precio_pool_usd) {
@@ -440,15 +463,22 @@
   }
 
   function showSlide(slides, index, onSelect) {
+    const descEl = document.getElementById('tickerDesc');
+    const ctaEl = document.getElementById('heroCta');
     labelEl.classList.remove('visible');
     priceEl.classList.remove('visible');
+    descEl.classList.remove('visible');
     setTimeout(() => {
       const s = slides[index];
       labelEl.textContent = s.label;
       priceEl.innerHTML = s.value + ' <span class="unit">' + s.unit + '</span>';
+      descEl.textContent = MODALIDAD_DESC[s.tab] || '';
+      const waText = MODALIDAD_WA_TEXT[s.tab] || 'Hola! Quiero saber más sobre VOLUM';
+      ctaEl.href = 'https://wa.me/5491164875889?text=' + encodeURIComponent(waText);
       renderTabs(slides, index, onSelect);
       labelEl.classList.add('visible');
       priceEl.classList.add('visible');
+      descEl.classList.add('visible');
     }, 200);
   }
 
