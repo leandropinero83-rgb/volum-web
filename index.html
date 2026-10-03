@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VOLUM · Pisos vinílicos SPC directo de fábrica</title>
+<style>
+  :root {
+    --bg: #0b0b0b;
+    --orange: #e35205;
+    --white: #ffffff;
+    --grey: #a8a8a8;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    background: var(--bg);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: var(--white);
+    min-height: 100%;
+  }
+
+  header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    padding-top: calc(20px + env(safe-area-inset-top, 0px));
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .logo span { color: var(--orange); }
+  nav button {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .hero {
+    padding: 56px 24px 40px;
+    max-width: 640px;
+  }
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 .accent { color: var(--orange); }
+  .hero p.sub {
+    margin-top: 18px;
+    font-size: 17px;
+    color: var(--grey);
+    line-height: 1.5;
+    max-width: 460px;
+  }
+
+  /* Ticker de precios */
+  .ticker-wrap {
+    margin-top: 32px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 20px 22px;
+    background: rgba(255,255,255,0.02);
+    min-height: 92px;
+  }
+  .ticker-label {
+    font-size: 13px;
+    color: var(--grey);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .ticker-label.visible { opacity: 1; }
+  .ticker-price {
+    font-size: 30px;
+    font-weight: 800;
+    margin-top: 4px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .ticker-price.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ticker-price .unit {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+  .ticker-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .ticker-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.3s ease;
+  }
+  .ticker-dots span.active { background: var(--orange); }
+
+  .cta {
+    display: inline-block;
+    margin-top: 28px;
+    background: var(--white);
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    padding: 16px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  .wa-float {
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25D366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    text-decoration: none;
+  }
+  .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+  /* Sección pool */
+  .pool {
+    padding: 48px 24px 60px;
+    max-width: 640px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .pool-status {
+    font-size: 15px;
+    color: var(--grey);
+  }
+  .pool-status b { color: var(--white); font-weight: 700; }
+  .pool-bar {
+    margin-top: 12px;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.12);
+    overflow: hidden;
+  }
+  .pool-bar-fill {
+    height: 100%;
+    background: var(--orange);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+  .pool-price {
+    margin-top: 28px;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--orange);
+  }
+  .pool-price .unit {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+  .pool-note {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--grey);
+    max-width: 420px;
+    line-height: 1.5;
+  }
+  .pool-cta {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    background: var(--orange);
+    color: var(--white);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    padding: 18px;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  /* Sección comparativa */
+  .compare {
+    padding: 48px 24px 60px;
+    max-width: 640px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .compare h2 {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .compare p.sub {
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+  .curve-wrap {
+    margin-top: 36px;
+  }
+  .curve-wrap svg { width: 100%; height: auto; overflow: visible; }
+  .curve-area { fill: rgba(255,255,255,0.06); }
+  .curve-line { fill: none; stroke: rgba(255,255,255,0.35); stroke-width: 1.5; }
+  .curve-axis { stroke: rgba(255,255,255,0.15); stroke-width: 1; }
+  .curve-tick { font-size: 11px; fill: var(--grey); }
+  .curve-pin-line { stroke: var(--orange); stroke-width: 1.5; stroke-dasharray: 3 3; }
+  .curve-pin-dot { fill: var(--orange); }
+  .curve-pin-label { font-size: 13px; font-weight: 800; fill: var(--orange); }
+  .curve-pin-sub { font-size: 11px; fill: var(--grey); }
+  .curve-zone-label { font-size: 11px; fill: var(--grey); }
+  .compare-source {
+    margin-top: 18px;
+    font-size: 12px;
+    color: rgba(168,168,168,0.7);
+    line-height: 1.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-label, .ticker-price, .pool-bar-fill { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">V<span>O</span>LUM</div>
+  <nav><button aria-label="Menú">&#9776;</button></nav>
+</header>
+
+<section class="hero">
+  <h1>Compra segura.<br>Precio real <span class="accent">de fábrica.</span></h1>
+  <p class="sub">Importamos pisos vinílicos SPC directo del fabricante en China. Vos accedés al mismo precio que antes solo tenían los grandes importadores — sin intermediarios, sin showroom que pagar.</p>
+
+  <div class="ticker-wrap" id="ticker">
+    <div class="ticker-label" id="tickerLabel"></div>
+    <div class="ticker-price" id="tickerPrice"></div>
+    <div class="ticker-dots" id="tickerDots"></div>
+  </div>
+
+  <a href="#contacto" class="cta">Quiero saber más</a>
+</section>
+
+<section class="pool" id="pool">
+  <div class="pool-status" id="poolStatus">Cargando datos del pool…</div>
+  <div class="pool-bar"><div class="pool-bar-fill" id="poolBarFill"></div></div>
+  <div class="pool-price" id="poolPrice"></div>
+  <div class="pool-note" id="poolNote"></div>
+  <a href="https://wa.me/5491164875889?text=Hola%21+Quiero+reservar+lugar+en+el+pool+VOLUM" class="pool-cta">Reservar lugar</a>
+</section>
+
+<section class="compare" id="compare">
+  <h2>Análisis de precio: dónde nos situamos.</h2>
+  <p class="sub">Relevamiento de 200 publicaciones con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm) frente al precio VOLUM.</p>
+  <div class="curve-wrap" id="curveWrap"></div>
+  <div class="compare-source" id="compareSource"></div>
+</section>
+
+<a class="wa-float" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.43 1.32 4.92L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67a8.2 8.2 0 0 1 5.83 2.42 8.18 8.18 0 0 1 2.42 5.82c0 4.55-3.7 8.25-8.25 8.25a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.14.82.84-3.06-.2-.32a8.17 8.17 0 0 1-1.27-4.38c0-4.55 3.7-8.22 8.26-8.22zm-4.56 4.6c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.67 2.55 4.04 3.58.57.24 1.01.39 1.36.5.57.18 1.09.15 1.5.09.46-.07 1.4-.57 1.6-1.12.2-.55.2-1.02.14-1.12-.06-.1-.22-.16-.46-.28-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12-.16.24-.62.77-.76.93-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.92-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.54-.41h-.46z"/></svg>
+</a>
+
+<script>
+(function() {
+  const DATA_URL = "https://script.google.com/macros/s/AKfycbyvHoXZTseoBq4q3sbCmWvqlDspaxYu2lYEdhkp1xKAhImnzRHWX4cNWMQ6e6CAz-Fo/exec";
+
+  const labelEl = document.getElementById('tickerLabel');
+  const priceEl = document.getElementById('tickerPrice');
+  const dotsEl = document.getElementById('tickerDots');
+
+  function buildSlides(data) {
+    const slides = [];
+    if (data.precio_pool_usd) {
+      slides.push({ label: "Precio pool", value: "USD " + data.precio_pool_usd, unit: "/ m² sin IVA" });
+    }
+    if (data.precio_consignacion_usd) {
+      slides.push({ label: "Venta por consignación", value: "USD " + data.precio_consignacion_usd, unit: "/ m² sin IVA" });
+    }
+    if (data.precio_venta_directa_ars) {
+      slides.push({ label: "Venta directa al público", value: "ARS " + data.precio_venta_directa_ars, unit: "/ m² c/IVA" });
+    }
+    return slides.length ? slides : [{ label: "Precio", value: "A confirmar", unit: "" }];
+  }
+
+  function renderDots(count, activeIndex) {
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('span');
+      if (i === activeIndex) dot.classList.add('active');
+      dotsEl.appendChild(dot);
+    }
+  }
+
+  function showSlide(slides, index) {
+    labelEl.classList.remove('visible');
+    priceEl.classList.remove('visible');
+    setTimeout(() => {
+      const s = slides[index];
+      labelEl.textContent = s.label;
+      priceEl.innerHTML = s.value + ' <span class="unit">' + s.unit + '</span>';
+      renderDots(slides.length, index);
+      labelEl.classList.add('visible');
+      priceEl.classList.add('visible');
+    }, 200);
+  }
+
+  function startTicker(slides) {
+    let i = 0;
+    showSlide(slides, i);
+    if (slides.length > 1) {
+      setInterval(() => {
+        i = (i + 1) % slides.length;
+        showSlide(slides, i);
+      }, 3200);
+    }
+  }
+
+  function renderPool(data) {
+    const statusEl = document.getElementById('poolStatus');
+    const barFillEl = document.getElementById('poolBarFill');
+    const priceEl2 = document.getElementById('poolPrice');
+    const noteEl = document.getElementById('poolNote');
+
+    const metros = Number(data.metros);
+    const metrosTotal = Number(data.metros_total);
+    const cierre = data.fecha_cierre || 'a confirmar';
+    const precio = data.precio_pool_usd || data.precio_volum || 'a confirmar';
+    const descuento = data.descuento || '';
+
+    statusEl.innerHTML = 'Pool activo · quedan <b>' + (isNaN(metros) ? '—' : metros.toLocaleString('es-AR')) + ' m²</b> · cierre <b>' + cierre + '</b>';
+
+    if (!isNaN(metros) && !isNaN(metrosTotal) && metrosTotal > 0) {
+      const vendidoPct = Math.max(0, Math.min(100, ((metrosTotal - metros) / metrosTotal) * 100));
+      barFillEl.style.width = vendidoPct + '%';
+    }
+
+    priceEl2.innerHTML = 'USD ' + precio + ' <span class="unit">/ m²</span>';
+    noteEl.textContent = '+ IVA' + (descuento ? ' · ' + descuento + ' menos que el mercado local.' : '.');
+  }
+
+  function renderCompare(data) {
+    const wrapEl = document.getElementById('curveWrap');
+    const sourceEl = document.getElementById('compareSource');
+    const comparativa = Array.isArray(data.comparativa) ? data.comparativa.slice() : [];
+    const precioVolumRaw = data.precio_pool_usd || data.precio_volum;
+    const precioVolum = parseFloat(String(precioVolumRaw).replace(',', '.'));
+
+    const marketVals = comparativa
+      .map(c => parseFloat(String(c.precio).replace(',', '.')))
+      .filter(v => !isNaN(v));
+
+    if (marketVals.length < 2 || isNaN(precioVolum)) {
+      wrapEl.innerHTML = '<p class="sub">Precio a confirmar.</p>';
+      return;
+    }
+
+    const mean = marketVals.reduce((a, b) => a + b, 0) / marketVals.length;
+    const variance = marketVals.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / marketVals.length;
+    const std = Math.sqrt(variance) || mean * 0.08;
+
+    const W = 600, H = 220, PAD_L = 16, PAD_R = 16, PAD_B = 34, PAD_T = 10;
+    const plotW = W - PAD_L - PAD_R;
+    const plotH = H - PAD_T - PAD_B;
+
+    const xMin = Math.min(precioVolum, mean - 3 * std) * 0.92;
+    const xMax = (mean + 3 * std) * 1.04;
+
+    function xToPx(x) { return PAD_L + ((x - xMin) / (xMax - xMin)) * plotW; }
+    function gauss(x) {
+      return (1 / (std * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mean) / std, 2));
+    }
+
+    const steps = 80;
+    const peak = gauss(mean);
+    let pathD = '';
+    let areaD = '';
+    for (let i = 0; i <= steps; i++) {
+      const x = xMin + (i / steps) * (xMax - xMin);
+      const px = xToPx(x);
+      const py = PAD_T + plotH - (gauss(x) / peak) * plotH * 0.88;
+      pathD += (i === 0 ? 'M' : 'L') + px.toFixed(1) + ',' + py.toFixed(1) + ' ';
+      areaD += (i === 0 ? 'M' : 'L') + px.toFixed(1) + ',' + py.toFixed(1) + ' ';
+    }
+    areaD += 'L' + xToPx(xMax).toFixed(1) + ',' + (PAD_T + plotH) + ' L' + xToPx(xMin).toFixed(1) + ',' + (PAD_T + plotH) + ' Z';
+
+    const baseY = PAD_T + plotH;
+    const volumPx = xToPx(precioVolum);
+
+    const svg =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">' +
+        '<path class="curve-area" d="' + areaD + '"/>' +
+        '<path class="curve-line" d="' + pathD + '"/>' +
+        '<line class="curve-axis" x1="' + PAD_L + '" y1="' + baseY + '" x2="' + (W - PAD_R) + '" y2="' + baseY + '"/>' +
+        '<text class="curve-zone-label" x="' + xToPx(mean) + '" y="' + (baseY + 20) + '" text-anchor="middle">rango de mercado</text>' +
+        '<line class="curve-pin-line" x1="' + volumPx + '" y1="' + (PAD_T + 4) + '" x2="' + volumPx + '" y2="' + baseY + '"/>' +
+        '<circle class="curve-pin-dot" cx="' + volumPx + '" cy="' + baseY + '" r="4"/>' +
+        '<text class="curve-pin-label" x="' + volumPx + '" y="' + (PAD_T - 0) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">VOLUM · USD ' + precioVolumRaw + '</text>' +
+        '<text class="curve-pin-sub" x="' + volumPx + '" y="' + (baseY + 20) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">tu precio</text>' +
+      '</svg>';
+
+    wrapEl.innerHTML = svg;
+    sourceEl.textContent = '';
+  }
+
+  fetch(DATA_URL)
+    .then(r => r.json())
+    .then(data => {
+      startTicker(buildSlides(data));
+      renderPool(data);
+      renderCompare(data);
+    })
+    .catch(() => {
+      startTicker([{ label: "Precio", value: "A confirmar", unit: "" }]);
+      document.getElementById('poolStatus').textContent = 'No se pudo cargar la información del pool.';
+    });
+})();
+</script>
+
+</body>
+</html>
