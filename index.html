@@ -222,6 +222,26 @@
   }
   .wa-float svg { width: 28px; height: 28px; fill: white; }
 
+  /* Quiénes somos */
+  .about {
+    padding: 64px 24px 56px;
+    max-width: 640px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .about h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .about-text {
+    margin-top: 20px;
+    font-size: 15px;
+    color: var(--grey);
+    line-height: 1.6;
+    max-width: 480px;
+  }
+  .about-text + .about-text { margin-top: 14px; }
+
   /* Sección pool */
   .pool {
     padding: 44px 24px 56px;
@@ -273,6 +293,36 @@
     max-width: 420px;
     line-height: 1.5;
   }
+  .pool-detail-btn {
+    display: block;
+    margin-top: 14px;
+    background: none;
+    border: none;
+    color: var(--orange);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+  }
+  .pool-detail {
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease;
+  }
+  .pool-detail.open { max-height: 160px; margin-top: 10px; }
+  .pool-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--grey);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    max-width: 280px;
+  }
+  .pool-detail-row b { color: var(--white); font-weight: 600; }
+
   .pool-cta {
     display: inline-block;
     margin-top: 16px;
@@ -417,12 +467,20 @@
   <div class="ticker-long" id="howLong"></div>
 </section>
 
+<section class="about" id="about">
+  <h2>Quiénes somos.</h2>
+  <p class="about-text">VOLUM lo armé yo, Leandro Piñero — arquitecto, con 20 años trabajando en construcción. En esos años vi una y otra vez lo mismo: una obra chica o mediana paga el metro cuadrado más caro que una grande, no porque el producto sea distinto, sino porque nadie importa en su volumen.</p>
+  <p class="about-text">VOLUM existe para resolver eso: agrupamos la demanda de varias obras para comprar directo de fábrica, al mismo precio que antes solo tenían los grandes importadores.</p>
+</section>
+
 <section class="pool" id="pool">
   <div class="pool-eyebrow">Próximo pool (C2)</div>
   <div class="pool-status" id="poolStatus">Cargando datos del pool…</div>
   <div class="pool-bar"><div class="pool-bar-fill" id="poolBarFill"></div></div>
   <div class="pool-price" id="poolPrice"></div>
   <div class="pool-note" id="poolNote"></div>
+  <button class="pool-detail-btn" id="poolDetailBtn" type="button">Ver detalle del pool ▾</button>
+  <div class="pool-detail" id="poolDetail"></div>
   <a href="https://wa.me/5491164875889?text=Hola%21+Quiero+que+me+avisen+cuando+abra+el+pr%C3%B3ximo+pool+VOLUM" class="pool-cta">Avisarme cuando abra</a>
 </section>
 
@@ -564,6 +622,21 @@
 
     priceEl2.innerHTML = 'USD ' + precio + ' <span class="unit">/ m²</span>';
     noteEl.textContent = '+ IVA' + (descuento ? ' · ' + descuento + ' menos que el mercado local.' : '.');
+
+    const detailBtn = document.getElementById('poolDetailBtn');
+    const detailEl = document.getElementById('poolDetail');
+    const comprometidos = (!isNaN(metros) && !isNaN(metrosTotal)) ? (metrosTotal - metros) : null;
+
+    detailEl.innerHTML =
+      '<div class="pool-detail-row"><span>Metros comprometidos</span><b>' + (comprometidos !== null ? comprometidos.toLocaleString('es-AR') + ' m²' : '—') + '</b></div>' +
+      '<div class="pool-detail-row"><span>Fecha de inicio</span><b>' + (data.fecha_inicio || '—') + '</b></div>' +
+      '<div class="pool-detail-row"><span>Fecha de cierre</span><b>' + (data.fecha_cierre || 'a confirmar') + '</b></div>' +
+      '<div class="pool-detail-row"><span>Entrega estimada</span><b>' + (data.fecha_entrega || '—') + '</b></div>';
+
+    detailBtn.onclick = () => {
+      const isOpen = detailEl.classList.toggle('open');
+      detailBtn.textContent = isOpen ? 'Ocultar detalle ▴' : 'Ver detalle del pool ▾';
+    };
   }
 
   function renderCompare(data, overridePriceRaw, overrideLabel) {
