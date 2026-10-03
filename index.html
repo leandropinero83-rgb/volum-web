@@ -772,6 +772,11 @@
     .z-brand { grid-column: auto; }
   }
   @media (min-width: 1500px) { .z-group a { font-size: 17px; } .z-group h3 { font-size: 14px; } }
+
+  /* ===== Corte: imagen del fabricante ===== */
+  .corte-img { margin: 32px 0 0; background: #fff; border-radius: 8px; overflow: hidden; }
+  .corte-img img { display: block; width: 100%; height: auto; }
+  @media (min-width: 900px) { .corte-img { margin-top: 48px; } }
 </style>
 </head>
 <body>
@@ -831,29 +836,11 @@
     <img src="colores.jpg" alt="Cuatro muestras de piso SPC en tonos de madera: dorado, caramelo, gris pardo y gris claro" width="1600" height="502" loading="lazy" decoding="async">
     <figcaption>Muestras de la línea del fabricante. Los colores de la primera tanda se confirman antes de abrir el pool.</figcaption>
   </figure>
+  <figure class="corte-img">
+    <img src="corte.jpg" alt="Corte del piso SPC con sus capas, de arriba hacia abajo: acabado UV, capa de desgaste transparente, capa decorativa, núcleo SPC y base" width="1170" height="445" loading="lazy" decoding="async">
+  </figure>
   <div class="corte">
     <div class="corte-left">
-    <svg class="corte-svg" viewBox="0 0 270 230" role="img" aria-label="Corte del piso con cinco capas, de arriba hacia abajo">
-      <rect x="56" y="16" width="160" height="8" fill="#e8e8e8" opacity=".55"/>
-      <rect x="56" y="24" width="160" height="16" fill="#cfd8dc" opacity=".26" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
-      <rect x="56" y="40" width="160" height="10" fill="#9a7048"/>
-      <rect x="56" y="50" width="160" height="120" fill="#6b6f73"/>
-      <rect x="56" y="170" width="160" height="44" fill="#101010" stroke="#4a4a4a" stroke-width="1"/>
-      <g stroke="#a8a8a8" stroke-width="1" fill="none">
-        <path d="M48 16H44V170H48"/><path d="M48 172H44V214H48"/>
-        <path d="M216 20L238 20"/><path d="M216 32L238 52"/><path d="M216 45L238 84"/><path d="M216 110L238 116"/><path d="M216 192L238 192"/>
-      </g>
-      <g font-family="Inter, Arial, sans-serif" font-size="11" fill="#d2d2d2" text-anchor="middle">
-        <text transform="translate(30 93) rotate(-90)">4 mm</text>
-        <text transform="translate(30 193) rotate(-90)">1 mm</text>
-      </g>
-      <g fill="none" stroke="#e35205" stroke-width="1.2">
-        <circle cx="249" cy="20" r="9"/><circle cx="249" cy="52" r="9"/><circle cx="249" cy="84" r="9"/><circle cx="249" cy="116" r="9"/><circle cx="249" cy="192" r="9"/>
-      </g>
-      <g font-family="Barlow Condensed, Arial, sans-serif" font-size="14" font-weight="700" fill="#e35205" text-anchor="middle">
-        <text x="249" y="25">1</text><text x="249" y="57">2</text><text x="249" y="89">3</text><text x="249" y="121">4</text><text x="249" y="197">5</text>
-      </g>
-    </svg>
     <figure class="abanico"><img src="abanico.jpg" alt="Muestras de piso SPC apiladas en abanico, en cuatro tonos de madera" width="1200" height="800" loading="lazy" decoding="async"></figure>
     </div>
     <div class="corte-text">
@@ -1035,6 +1022,18 @@
       if (fullData && (s.tab === 'Pool' || s.tab === 'Consignación')) {
         const rawPrice = s.tab === 'Pool' ? fullData.precio_pool_usd : fullData.precio_consignacion_usd;
         renderCompare(fullData, rawPrice, 'VOLUM ' + s.tab);
+      } else if (fullData && s.tab === 'Venta directa') {
+        // El precio final está en pesos con IVA: se pasa a USD sin IVA para poder marcarlo en la misma escala.
+        const ars = parseFloat(String(fullData.precio_venta_directa_ars).replace(/\./g, '').replace(',', '.'));
+        const mep = parseFloat(fullData.mep_referencia) || 1545;
+        if (!isNaN(ars)) {
+          const usd = ars / 1.21 / mep;
+          const usdTxt = usd.toFixed(1).replace('.', ',');
+          renderCompare(fullData, usdTxt, 'VOLUM Venta directa',
+            'ARS ' + fullData.precio_venta_directa_ars + ' con IVA equivale a unos USD ' + usdTxt + ' sin IVA, al dólar MEP de referencia ($' + mep.toLocaleString('es-AR') + ').');
+        } else {
+          renderCompare(fullData, 'a confirmar', 'VOLUM Venta directa', 'Precio de venta directa a confirmar.');
+        }
       }
 
       labelEl.classList.add('visible');
@@ -1152,7 +1151,7 @@
     if (lastCompare && n !== lastNarrow) { lastNarrow = n; renderCompare.apply(null, lastCompare); }
   });
 
-  function renderCompare(data, overridePriceRaw, overrideLabel) {
+  function renderCompare(data, overridePriceRaw, overrideLabel, nota) {
     const wrapEl = document.getElementById('curveWrap');
     const sourceEl = document.getElementById('compareSource');
     const comparativa = Array.isArray(data.comparativa) ? data.comparativa.slice() : [];
@@ -1203,6 +1202,8 @@
 
     const baseY = PAD_T + plotH;
     const volumPx = hayPin ? xToPx(precioVolum) : 0;
+    const pinAnchor = volumPx < 80 ? 'start' : (volumPx > W - 150 ? 'end' : 'middle');
+    const pinX = pinAnchor === 'end' ? Math.min(volumPx + 6, W - PAD_R) : volumPx;
 
     // Escala de precios en USD debajo de la curva
     const tickCount = 5;
@@ -1225,13 +1226,13 @@
         (hayPin ? (
         '<line class="curve-pin-line" x1="' + volumPx + '" y1="' + (PAD_T + 4) + '" x2="' + volumPx + '" y2="' + baseY + '"/>' +
         '<circle class="curve-pin-dot" cx="' + volumPx + '" cy="' + baseY + '" r="4"/>' +
-        '<text class="curve-pin-label" x="' + volumPx + '" y="' + (PAD_T - 0) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">' + pinLabel + ': USD ' + precioVolumRaw + '</text>' +
-        '<text class="curve-pin-sub" x="' + volumPx + '" y="' + (baseY + 20) + '" text-anchor="' + (volumPx < 80 ? 'start' : 'middle') + '">tu precio</text>'
+        '<text class="curve-pin-label" x="' + pinX + '" y="' + (PAD_T - 0) + '" text-anchor="' + pinAnchor + '">' + pinLabel + ': USD ' + precioVolumRaw + '</text>' +
+        '<text class="curve-pin-sub" x="' + pinX + '" y="' + (baseY + 34) + '" text-anchor="' + pinAnchor + '">' + (/Venta directa/.test(pinLabel) ? 'precio final' : 'tu precio') + '</text>'
         ) : '') +
       '</svg>';
 
     wrapEl.innerHTML = svg;
-    sourceEl.textContent = hayPin ? (data.precio_estado ? 'Precio VOLUM ' + data.precio_estado + ', sin IVA.' : '') : 'Precio VOLUM a confirmar: se marca sobre la curva cuando cierre el costo del container.';
+    sourceEl.textContent = nota ? nota : hayPin ? (data.precio_estado ? 'Precio VOLUM ' + data.precio_estado + ', sin IVA.' : '') : 'Precio VOLUM a confirmar: se marca sobre la curva cuando cierre el costo del container.';
   }
 
   const HOW_DATA = [
