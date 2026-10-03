@@ -128,19 +128,28 @@
     font-weight: 400;
     color: var(--grey);
   }
-  .ticker-dots {
+  .ticker-tabs {
     display: flex;
-    gap: 6px;
-    margin-top: 14px;
+    gap: 8px;
+    margin-top: 44px;
   }
-  .ticker-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    transition: background 0.3s ease;
+  .ticker-tab {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grey);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
   }
-  .ticker-dots span.active { background: var(--orange); }
+  .ticker-tab.active {
+    color: var(--white);
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+  .ticker-wrap { margin-top: 12px; }
 
   .cta {
     display: inline-block;
@@ -333,10 +342,10 @@
   <h1>Compra segura.<br>Precio real <span class="accent">de fábrica.</span></h1>
   <p class="sub">Importamos pisos vinílicos SPC directo del fabricante en China. Vos accedés al mismo precio que antes solo tenían los grandes importadores — sin intermediarios, sin showroom que pagar.</p>
 
+  <div class="ticker-tabs" id="tickerTabs"></div>
   <div class="ticker-wrap" id="ticker">
     <div class="ticker-label" id="tickerLabel"></div>
     <div class="ticker-price" id="tickerPrice"></div>
-    <div class="ticker-dots" id="tickerDots"></div>
   </div>
 
   <a href="#contacto" class="cta">Quiero saber más</a>
@@ -402,39 +411,42 @@
 
   const labelEl = document.getElementById('tickerLabel');
   const priceEl = document.getElementById('tickerPrice');
-  const dotsEl = document.getElementById('tickerDots');
+  const tabsEl = document.getElementById('tickerTabs');
 
   function buildSlides(data) {
     const slides = [];
     if (data.precio_pool_usd) {
-      slides.push({ label: "Precio pool", value: "USD " + data.precio_pool_usd, unit: "/ m² sin IVA" });
+      slides.push({ tab: "Pool", label: "Precio pool", value: "USD " + data.precio_pool_usd, unit: "/ m² sin IVA" });
     }
     if (data.precio_consignacion_usd) {
-      slides.push({ label: "Venta por consignación", value: "USD " + data.precio_consignacion_usd, unit: "/ m² sin IVA" });
+      slides.push({ tab: "Consignación", label: "Venta por consignación", value: "USD " + data.precio_consignacion_usd, unit: "/ m² sin IVA" });
     }
     if (data.precio_venta_directa_ars) {
-      slides.push({ label: "Venta directa al público", value: "ARS " + data.precio_venta_directa_ars, unit: "/ m² c/IVA" });
+      slides.push({ tab: "Venta directa", label: "Venta directa al público", value: "ARS " + data.precio_venta_directa_ars, unit: "/ m² c/IVA" });
     }
-    return slides.length ? slides : [{ label: "Precio", value: "A confirmar", unit: "" }];
+    return slides.length ? slides : [{ tab: "Precio", label: "Precio", value: "A confirmar", unit: "" }];
   }
 
-  function renderDots(count, activeIndex) {
-    dotsEl.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const dot = document.createElement('span');
-      if (i === activeIndex) dot.classList.add('active');
-      dotsEl.appendChild(dot);
-    }
+  function renderTabs(slides, activeIndex, onSelect) {
+    tabsEl.innerHTML = '';
+    slides.forEach((s, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ticker-tab' + (i === activeIndex ? ' active' : '');
+      btn.textContent = s.tab;
+      btn.type = 'button';
+      btn.addEventListener('click', () => onSelect(i));
+      tabsEl.appendChild(btn);
+    });
   }
 
-  function showSlide(slides, index) {
+  function showSlide(slides, index, onSelect) {
     labelEl.classList.remove('visible');
     priceEl.classList.remove('visible');
     setTimeout(() => {
       const s = slides[index];
       labelEl.textContent = s.label;
       priceEl.innerHTML = s.value + ' <span class="unit">' + s.unit + '</span>';
-      renderDots(slides.length, index);
+      renderTabs(slides, index, onSelect);
       labelEl.classList.add('visible');
       priceEl.classList.add('visible');
     }, 200);
@@ -442,11 +454,22 @@
 
   function startTicker(slides) {
     let i = 0;
-    showSlide(slides, i);
+    let autoTimer = null;
+
+    function select(idx, isManual) {
+      i = idx;
+      showSlide(slides, i, (newIdx) => select(newIdx, true));
+      if (isManual && autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+      }
+    }
+
+    select(i, false);
     if (slides.length > 1) {
-      setInterval(() => {
+      autoTimer = setInterval(() => {
         i = (i + 1) % slides.length;
-        showSlide(slides, i);
+        showSlide(slides, i, (newIdx) => select(newIdx, true));
       }, 3200);
     }
   }
