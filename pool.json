@@ -1,0 +1,27 @@
+{
+  "metros": 3127,
+  "metros_total": 3127,
+  "fecha_cierre": "a confirmar",
+  "fecha_inicio": "oct 2026",
+  "fecha_entrega": "ene 2027",
+  "descuento": "20 a 35%",
+  "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm). Abril 2026.",
+  "precio_volum": "a confirmar",
+  "fee_reserva": "100",
+  "faq_precio_85": "a confirmar",
+  "faq_precio_100": "a confirmar",
+  "precio_pool_usd": "14",
+  "precio_consignacion_usd": "18",
+  "precio_venta_directa_ars": "31.500",
+  "tabla": [
+    {"producto": "Piso SPC 4mm / m²",     "mercado": "USD 20,50", "volum": "a confirmar + IVA", "ahorro": "20–35%"},
+    {"producto": "Revestimiento WPC / m²", "mercado": "USD 18,00", "volum": "Próximo pool",    "ahorro": "—"},
+    {"producto": "Cerradura smart / u.",   "mercado": "USD 85,00", "volum": "Próximo pool",    "ahorro": "—"}
+  ],
+  "comparativa": [
+    {"ref": "Minorista promedio", "precio": "19,83"},
+    {"ref": "Pisarás (volumen)",  "precio": "18,18"},
+    {"ref": "Multimart",          "precio": "17,77"},
+    {"ref": "Mercado promedio",   "precio": "16,94"}
+  ]
+}
