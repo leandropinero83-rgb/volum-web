@@ -150,18 +150,49 @@
     border-color: var(--orange);
   }
   .ticker-wrap { margin-top: 12px; }
-  .ticker-desc {
+
+  .ticker-detail {
     margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .ticker-short {
     font-size: 14px;
     color: var(--grey);
     line-height: 1.5;
-    max-width: 440px;
-    min-height: 42px;
-    opacity: 0;
-    transition: opacity 0.35s ease;
   }
-  .ticker-desc.visible { opacity: 1; }
-
+  .ticker-expand-btn {
+    margin-top: 10px;
+    background: none;
+    border: none;
+    color: var(--orange);
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+  }
+  .ticker-long {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--grey);
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .ticker-long.open { max-height: 300px; }
+  .ticker-contact {
+    display: inline-block;
+    margin-top: 18px;
+    background: var(--orange);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
   .cta {
     display: inline-block;
     margin-top: 28px;
@@ -357,10 +388,13 @@
   <div class="ticker-wrap" id="ticker">
     <div class="ticker-label" id="tickerLabel"></div>
     <div class="ticker-price" id="tickerPrice"></div>
+    <div class="ticker-detail">
+      <div class="ticker-short" id="tickerShort"></div>
+      <button class="ticker-expand-btn" id="tickerExpandBtn" type="button">Ampliar ▾</button>
+      <div class="ticker-long" id="tickerLong"></div>
+      <a class="ticker-contact" id="tickerContact" href="#">Quiero saber más</a>
+    </div>
   </div>
-  <div class="ticker-desc" id="tickerDesc"></div>
-
-  <a href="#contacto" class="cta" id="heroCta">Quiero saber más</a>
 </section>
 
 <section class="compare" id="compare">
@@ -425,29 +459,32 @@
   const priceEl = document.getElementById('tickerPrice');
   const tabsEl = document.getElementById('tickerTabs');
 
-  const MODALIDAD_DESC = {
-    "Pool": "Sumás tu obra a una compra conjunta. Accedés al precio de fábrica sin poner capital hasta que se completa y cierra el container.",
-    "Consignación": "Nosotros ponemos el stock en tu local. Vendés al público y nos liquidás solo lo que efectivamente vendiste — sin inmovilizar capital.",
-    "Venta directa": "Comprás directo para tu obra o reventa, con entrega desde el stock disponible. Ideal si necesitás los metros ya."
-  };
-  const MODALIDAD_WA_TEXT = {
-    "Pool": "Hola! Quiero sumarme al pool de VOLUM",
-    "Consignación": "Hola! Quiero info sobre vender VOLUM por consignación",
-    "Venta directa": "Hola! Quiero comprar VOLUM por venta directa"
-  };
-
   function buildSlides(data) {
     const slides = [];
     if (data.precio_pool_usd) {
-      slides.push({ tab: "Pool", label: "Precio pool", value: "USD " + data.precio_pool_usd, unit: "/ m² sin IVA" });
+      slides.push({
+        tab: "Pool", label: "Precio pool", value: "USD " + data.precio_pool_usd, unit: "/ m² sin IVA",
+        short: "Sumás tus m² a la demanda. Cuando se completa el container, comprás al precio de fábrica.",
+        long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: ~3 meses (fabricación + tránsito + aduana).",
+        waText: "Hola! Quiero sumarme al pool de VOLUM"
+      });
     }
     if (data.precio_consignacion_usd) {
-      slides.push({ tab: "Consignación", label: "Venta por consignación", value: "USD " + data.precio_consignacion_usd, unit: "/ m² sin IVA" });
+      slides.push({
+        tab: "Consignación", label: "Venta por consignación", value: "USD " + data.precio_consignacion_usd, unit: "/ m² sin IVA",
+        short: "Dejás stock en tu local o depósito. Cobrás cuando se vende — no hay que anticipar capital.",
+        long: "Ponemos el producto en tu local, depósito o showroom sin que lo compres. Vos lo exhibís y vendés; cobrás tu margen en cada venta. No hay anticipo ni compra de stock de tu parte — liquidamos periódicamente contra lo efectivamente vendido.",
+        waText: "Hola! Quiero saber más sobre la consignación de VOLUM"
+      });
     }
     if (data.precio_venta_directa_ars) {
-      slides.push({ tab: "Venta directa", label: "Venta directa al público", value: "ARS " + data.precio_venta_directa_ars, unit: "/ m² c/IVA" });
+      slides.push({
+        tab: "Venta directa", label: "Venta directa al público", value: "ARS " + data.precio_venta_directa_ars, unit: "/ m² c/IVA",
+        short: "Comprás directo para tu obra o reventa, con entrega inmediata sobre el stock disponible.",
+        waText: "Hola! Quiero comprar directo a VOLUM"
+      });
     }
-    return slides.length ? slides : [{ tab: "Precio", label: "Precio", value: "A confirmar", unit: "" }];
+    return slides.length ? slides : [{ tab: "Precio", label: "Precio", value: "A confirmar", unit: "", short: "" }];
   }
 
   function renderTabs(slides, activeIndex, onSelect) {
@@ -462,23 +499,39 @@
     });
   }
 
+  const shortEl = document.getElementById('tickerShort');
+  const expandBtnEl = document.getElementById('tickerExpandBtn');
+  const longEl = document.getElementById('tickerLong');
+  const contactEl = document.getElementById('tickerContact');
+
   function showSlide(slides, index, onSelect) {
-    const descEl = document.getElementById('tickerDesc');
-    const ctaEl = document.getElementById('heroCta');
     labelEl.classList.remove('visible');
     priceEl.classList.remove('visible');
-    descEl.classList.remove('visible');
     setTimeout(() => {
       const s = slides[index];
       labelEl.textContent = s.label;
       priceEl.innerHTML = s.value + ' <span class="unit">' + s.unit + '</span>';
-      descEl.textContent = MODALIDAD_DESC[s.tab] || '';
-      const waText = MODALIDAD_WA_TEXT[s.tab] || 'Hola! Quiero saber más sobre VOLUM';
-      ctaEl.href = 'https://wa.me/5491164875889?text=' + encodeURIComponent(waText);
       renderTabs(slides, index, onSelect);
+
+      shortEl.textContent = s.short || '';
+      longEl.textContent = s.long || '';
+      longEl.classList.remove('open');
+
+      if (s.long) {
+        expandBtnEl.style.display = 'inline-block';
+        expandBtnEl.textContent = 'Ampliar ▾';
+        expandBtnEl.onclick = () => {
+          const isOpen = longEl.classList.toggle('open');
+          expandBtnEl.textContent = isOpen ? 'Ver menos ▴' : 'Ampliar ▾';
+        };
+      } else {
+        expandBtnEl.style.display = 'none';
+      }
+
+      contactEl.href = 'https://wa.me/5491164875889?text=' + encodeURIComponent(s.waText || 'Hola! Quiero saber más sobre VOLUM');
+
       labelEl.classList.add('visible');
       priceEl.classList.add('visible');
-      descEl.classList.add('visible');
     }, 200);
   }
 
