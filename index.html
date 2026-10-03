@@ -622,6 +622,78 @@
     .pool-leg { font-size: 16px; }
     .nav-row a { font-size: 19px; }
   }
+
+  /* Efecto único: el container se "arma" tablón a tablón al llegar a la sección del pool */
+  .pool-fill { display: flex; width: 100%; height: 100%; }
+  .js-anim .pool-fill { clip-path: inset(0 100% 0 0); }
+  .js-anim .pool-fill.laid { clip-path: inset(0 0 0 0); transition: clip-path 1.6s steps(24, end); }
+  @media (prefers-reduced-motion: reduce) {
+    .js-anim .pool-fill, .js-anim .pool-fill.laid { clip-path: none; transition: none; }
+  }
+
+  /* Tablet: columna centrada */
+  @media (min-width: 600px) and (max-width: 899px) {
+    .hero, .compare, .how, .about, .pool { margin-left: auto; margin-right: auto; }
+    .nav-row { justify-content: center; }
+  }
+
+  /* ===== Foto de muestras ===== */
+  .hero-photo { margin: 28px 0 0; border-radius: 10px; overflow: hidden; border: 1px solid #262626; background: #141414; }
+  .hero-photo img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+  @media (min-width: 900px) {
+    .hero-photo { grid-column: 1 / -1; grid-row: 3; margin-top: 56px; }
+    .hero-photo img { aspect-ratio: 16 / 7; object-position: 50% 62%; }
+  }
+
+  /* ===== Celu: secciones más juntas, separadas por una línea gris ===== */
+  @media (max-width: 899px) {
+    .hero { display: flex; flex-direction: column; padding: 48px 24px 36px; }
+    .hero h1, .hero p.sub { order: 0; }
+    .hero-photo { order: 1; margin-top: 28px; }
+    .hero-side { order: 2; }
+    .hero-side .ticker-tabs { margin-top: 28px; }
+    .compare, .how, .about, .pool { padding-top: 36px; padding-bottom: 36px; }
+    .pool { padding-top: 36px; }
+    .compare, .how, .about, .pool { border-top: 1px solid #2c2c2c; }
+    .curve-wrap { margin-top: 24px; }
+    .how-steps { margin-top: 24px; gap: 24px; }
+    .compare-source { margin-top: 12px; }
+  }
+
+  /* ===== Producto: colores y corte ===== */
+  .producto { padding: 44px 24px 44px; max-width: 640px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .producto h2 { font-size: 24px; font-weight: 800; line-height: 1.2; }
+  .colores { margin: 24px 0 0; }
+  .colores img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid #262626; }
+  .colores figcaption { margin-top: 10px; font-size: 13px; color: var(--grey); line-height: 1.5; }
+  .corte { margin-top: 36px; }
+  .corte-svg { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto 28px; }
+  .capas { list-style: none; counter-reset: capa; }
+  .capas li { counter-increment: capa; display: grid; grid-template-columns: 34px 1fr; column-gap: 10px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .capas li::before { content: counter(capa); grid-row: 1 / span 2; font-family: 'Barlow Condensed', Arial, sans-serif; font-size: 26px; font-weight: 700; line-height: 1; color: var(--orange); }
+  .capas b { font-size: 15px; font-weight: 600; color: var(--white); }
+  .capas span { font-size: 14px; color: var(--grey); line-height: 1.5; margin-top: 3px; }
+  .ficha { margin-top: 24px; }
+  .ficha-row { display: flex; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--grey); padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .ficha-row b { color: var(--white); font-weight: 600; text-align: right; }
+  .corte-nota { margin-top: 12px; font-size: 12px; color: rgba(168,168,168,0.7); }
+  @media (min-width: 900px) {
+    .producto { max-width: 1120px; margin: 0 auto; padding: 72px 32px; }
+    .producto h2 { font-size: 34px; }
+    .colores { margin-top: 32px; }
+    .colores img { border-radius: 10px; }
+    .corte { display: grid; grid-template-columns: minmax(260px, 340px) 1fr; column-gap: 72px; align-items: start; margin-top: 56px; }
+    .corte-svg { margin: 0; max-width: none; }
+    .capas span { font-size: 15px; }
+  }
+  @media (min-width: 1500px) {
+    .producto { max-width: 1280px; }
+    .producto h2 { font-size: 42px; }
+    .capas b { font-size: 17px; } .capas span { font-size: 16px; }
+    .ficha-row { font-size: 16px; }
+  }
+  @media (min-width: 600px) and (max-width: 899px) { .producto { margin-left: auto; margin-right: auto; } }
+  @media (max-width: 899px) { .producto { padding-top: 36px; padding-bottom: 36px; border-top: 1px solid #2c2c2c; } }
 </style>
 </head>
 <body>
@@ -631,6 +703,7 @@
   <nav><button id="menuBtn" aria-label="Menú" aria-expanded="false" aria-controls="menuPanel">&#9776;</button></nav>
   <div class="nav-row" id="navRow">
     <a href="#precios">Precios</a>
+    <a href="#producto">Producto</a>
     <a href="#compare">Comparativa</a>
     <a href="#how">Cómo funciona</a>
     <a href="#pool">Pool</a>
@@ -639,6 +712,7 @@
   <a class="hdr-cta" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM">Escribinos</a>
   <div class="menu-panel" id="menuPanel">
     <a href="#precios">Precios</a>
+    <a href="#producto">El producto</a>
     <a href="#compare">Dónde nos situamos</a>
     <a href="#how">Cómo funciona</a>
     <a href="#pool">Pool y participación</a>
@@ -664,6 +738,55 @@
     </div>
   </div>
   </div>
+  <figure class="hero-photo"><img src="muestras.jpg" alt="Muestras de pisos SPC en distintos colores de madera" width="1400" height="1042" decoding="async"></figure>
+</section>
+
+<section class="producto" id="producto">
+  <h2>Qué estás comprando.</h2>
+  <figure class="colores">
+    <img src="colores.jpg" alt="Cuatro muestras de piso SPC en tonos de madera: dorado, caramelo, gris pardo y gris claro" width="1600" height="502" loading="lazy" decoding="async">
+    <figcaption>Muestras de la línea del fabricante. Los colores de la primera tanda se confirman antes de abrir el pool.</figcaption>
+  </figure>
+  <div class="corte">
+    <svg class="corte-svg" viewBox="0 0 270 230" role="img" aria-label="Corte del piso con cinco capas, de arriba hacia abajo">
+      <rect x="56" y="16" width="160" height="8" fill="#e8e8e8" opacity=".55"/>
+      <rect x="56" y="24" width="160" height="16" fill="#cfd8dc" opacity=".26" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+      <rect x="56" y="40" width="160" height="10" fill="#9a7048"/>
+      <rect x="56" y="50" width="160" height="120" fill="#6b6f73"/>
+      <rect x="56" y="170" width="160" height="44" fill="#101010" stroke="#4a4a4a" stroke-width="1"/>
+      <g stroke="#7a7a7a" stroke-width="1" fill="none">
+        <path d="M48 16H44V170H48"/><path d="M48 172H44V214H48"/>
+        <path d="M216 20L238 20"/><path d="M216 32L238 52"/><path d="M216 45L238 84"/><path d="M216 110L238 116"/><path d="M216 192L238 192"/>
+      </g>
+      <g font-family="Inter, Arial, sans-serif" font-size="11" fill="#a8a8a8" text-anchor="middle">
+        <text transform="translate(30 93) rotate(-90)">4 mm</text>
+        <text transform="translate(30 193) rotate(-90)">1 mm</text>
+      </g>
+      <g fill="none" stroke="#e35205" stroke-width="1.2">
+        <circle cx="249" cy="20" r="9"/><circle cx="249" cy="52" r="9"/><circle cx="249" cy="84" r="9"/><circle cx="249" cy="116" r="9"/><circle cx="249" cy="192" r="9"/>
+      </g>
+      <g font-family="Barlow Condensed, Arial, sans-serif" font-size="14" font-weight="700" fill="#e35205" text-anchor="middle">
+        <text x="249" y="25">1</text><text x="249" y="57">2</text><text x="249" y="89">3</text><text x="249" y="121">4</text><text x="249" y="197">5</text>
+      </g>
+    </svg>
+    <div class="corte-text">
+      <ol class="capas">
+        <li><b>Acabado UV</b><span>Protege la superficie de rayones y manchas.</span></li>
+        <li><b>Capa de desgaste, 0,5 mm</b><span>Transparente. Es la que se gasta con el uso: a más espesor, más vida útil.</span></li>
+        <li><b>Capa decorativa</b><span>La veta de madera impresa que ves en cada color.</span></li>
+        <li><b>Núcleo SPC</b><span>Piedra y PVC prensados. Rígido, estable con los cambios de temperatura y no absorbe agua.</span></li>
+        <li><b>Base IXPE, 1 mm</b><span>Viene incorporada al piso: amortigua el paso y el ruido, y no hace falta comprar manto aparte.</span></li>
+      </ol>
+      <div class="ficha">
+        <div class="ficha-row"><span>Pieza</span><b>1525 × 230 mm</b></div>
+        <div class="ficha-row"><span>Espesor</span><b>4 mm + 1 mm de base</b></div>
+        <div class="ficha-row"><span>Instalación</span><b>Click, sistema Unilin</b></div>
+        <div class="ficha-row"><span>Superficie</span><b>Con relieve (embossed)</b></div>
+        <div class="ficha-row"><span>Caja</span><b>6 piezas, 2,1 m²</b></div>
+      </div>
+      <p class="corte-nota">Esquema ilustrativo, sin escala.</p>
+    </div>
+  </div>
 </section>
 
 <section class="compare" id="compare">
@@ -688,8 +811,10 @@
   <h2>Así va el próximo container.</h2>
   <div class="pool-status" id="poolStatus">Cargando datos del pool…</div>
   <div class="pool-bar" role="img" aria-label="Llenado del container">
-    <div class="pool-seg pool-seg-base" id="poolSegBase"></div>
-    <div class="pool-seg pool-seg-res" id="poolSegRes"></div>
+    <div class="pool-fill" id="poolFill">
+      <div class="pool-seg pool-seg-base" id="poolSegBase"></div>
+      <div class="pool-seg pool-seg-res" id="poolSegRes"></div>
+    </div>
   </div>
   <div class="pool-legend" id="poolLegend"></div>
 </div>
@@ -715,7 +840,7 @@
 
 <script>
 (function() {
-  const DATA_URL = "https://raw.githubusercontent.com/leandropinero83-rgb/volum-web/main/pool.json?t=" + Date.now();
+  const DATA_URL = "pool.json?t=" + Date.now(); // mismo sitio: sin demora de caché de GitHub
 
   const labelEl = document.getElementById('tickerLabel');
   const priceEl = document.getElementById('tickerPrice');
@@ -770,6 +895,8 @@
   const longEl = document.getElementById('tickerLong');
   const contactEl = document.getElementById('tickerContact');
   let fullData = null;
+  let tickerPaused = false;
+  let currentSlides = [];
 
   function showSlide(slides, index, onSelect) {
     labelEl.classList.remove('visible');
@@ -785,14 +912,15 @@
       longEl.classList.remove('open');
 
       if (s.long) {
-        expandBtnEl.style.display = 'inline-block';
+        expandBtnEl.style.visibility = 'visible';
         expandBtnEl.textContent = 'Ampliar ▾';
         expandBtnEl.onclick = () => {
           const isOpen = longEl.classList.toggle('open');
           expandBtnEl.textContent = isOpen ? 'Ver menos ▴' : 'Ampliar ▾';
+          if (isOpen) tickerPaused = true;
         };
       } else {
-        expandBtnEl.style.display = 'none';
+        expandBtnEl.style.visibility = 'hidden';
       }
 
       contactEl.href = 'https://wa.me/5491164875889?text=' + encodeURIComponent(s.waText || 'Hola! Quiero saber más sobre VOLUM');
@@ -806,6 +934,28 @@
       labelEl.classList.add('visible');
       priceEl.classList.add('visible');
     }, 200);
+  }
+
+  // Altura fija: la tarjeta mide siempre lo que mide la modalidad más alta, así nada salta al cambiar de pestaña.
+  function lockTickerHeight() {
+    const wrap = document.getElementById('ticker');
+    if (!wrap || !currentSlides.length) return;
+    const prev = { l: labelEl.textContent, p: priceEl.innerHTML, s: shortEl.textContent, g: longEl.textContent,
+                   v: expandBtnEl.style.visibility, open: longEl.classList.contains('open') };
+    wrap.style.minHeight = '0px';
+    longEl.classList.remove('open');
+    let max = 0;
+    currentSlides.forEach(sl => {
+      labelEl.textContent = sl.label;
+      priceEl.innerHTML = sl.value + ' <span class="unit">' + sl.unit + '</span>';
+      shortEl.textContent = sl.short || '';
+      longEl.textContent = sl.long || '';
+      expandBtnEl.style.visibility = 'visible';
+      max = Math.max(max, wrap.offsetHeight);
+    });
+    labelEl.textContent = prev.l; priceEl.innerHTML = prev.p; shortEl.textContent = prev.s; longEl.textContent = prev.g;
+    expandBtnEl.style.visibility = prev.v; if (prev.open) longEl.classList.add('open');
+    wrap.style.minHeight = max + 'px';
   }
 
   function startTicker(slides) {
@@ -824,6 +974,7 @@
     select(i, false);
     if (slides.length > 1) {
       autoTimer = setInterval(() => {
+        if (tickerPaused) return;
         i = (i + 1) % slides.length;
         showSlide(slides, i, (newIdx) => select(newIdx, true));
       }, 3200);
@@ -1009,7 +1160,9 @@
     }
   ];
 
+  let howIndex = 0;
   function renderHow(activeIndex) {
+    howIndex = activeIndex;
     const tabsEl = document.getElementById('howTabs');
     const stepsEl = document.getElementById('howSteps');
     const expandBtnEl = document.getElementById('howExpandBtn');
@@ -1034,17 +1187,37 @@
     longEl.classList.remove('open');
 
     if (modalidad.long) {
-      expandBtnEl.style.display = 'inline-block';
+      expandBtnEl.style.visibility = 'visible';
       expandBtnEl.textContent = 'Ampliar ▾';
       expandBtnEl.onclick = () => {
         const isOpen = longEl.classList.toggle('open');
         expandBtnEl.textContent = isOpen ? 'Ver menos ▴' : 'Ampliar ▾';
       };
     } else {
-      expandBtnEl.style.display = 'none';
+      expandBtnEl.style.visibility = 'hidden';
     }
   }
   renderHow(0);
+
+  function lockHowHeight() {
+    const stepsEl = document.getElementById('howSteps');
+    if (!stepsEl) return;
+    const keep = howIndex;
+    stepsEl.style.minHeight = '0px';
+    let max = 0;
+    HOW_DATA.forEach((m, i) => {
+      stepsEl.innerHTML = m.steps.map((st, k) =>
+        '<div class="how-step"><div class="n">' + (k + 1) + '</div><div><div class="t">' + st.t + '</div><div class="d">' + st.d + '</div></div></div>'
+      ).join('');
+      max = Math.max(max, stepsEl.offsetHeight);
+    });
+    renderHow(keep);
+    stepsEl.style.minHeight = max + 'px';
+  }
+  let lockTimer = null;
+  function relock() { clearTimeout(lockTimer); lockTimer = setTimeout(() => { lockTickerHeight(); lockHowHeight(); }, 150); }
+  window.addEventListener('resize', relock);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relock);
 
   const menuBtn = document.getElementById('menuBtn');
   const menuPanel = document.getElementById('menuPanel');
@@ -1056,6 +1229,18 @@
   menuBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(!menuPanel.classList.contains('open')); });
   menuPanel.addEventListener('click', e => { if (e.target.tagName === 'A') setMenu(false); });
   document.addEventListener('click', e => { if (!menuPanel.contains(e.target)) setMenu(false); });
+
+  // Efecto de armado del pool (una sola vez)
+  (function () {
+    const fill = document.getElementById('poolFill');
+    if (!fill) return;
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('js-anim');
+    const io2 = new IntersectionObserver((entries, obs) => {
+      entries.forEach(en => { if (en.isIntersecting) { fill.classList.add('laid'); obs.disconnect(); } });
+    }, { threshold: 0.6 });
+    io2.observe(document.getElementById('poolBarWrap') || fill.parentNode);
+  })();
 
   const navLinks = Array.from(document.querySelectorAll('#navRow a'));
   if ('IntersectionObserver' in window) {
@@ -1070,7 +1255,7 @@
         });
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
-    ['top', 'compare', 'how', 'pool', 'about'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+    ['top', 'producto', 'compare', 'how', 'pool', 'about'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
 
   // Copia de respaldo de pool.json: se usa solo si no se puede leer el archivo vivo.
@@ -1079,7 +1264,10 @@
   function renderAll(data) {
     fullData = data;
     PRICE_TAG = data.precio_estado ? ' ' + data.precio_estado : '';
-    startTicker(buildSlides(data));
+    currentSlides = buildSlides(data);
+    startTicker(currentSlides);
+    lockTickerHeight();
+    lockHowHeight();
     renderPool(data);
     renderCompare(data, data.precio_pool_usd || data.precio_volum, 'VOLUM Pool');
   }
