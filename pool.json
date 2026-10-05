@@ -14,15 +14,15 @@
   "fee_reserva": "100",
   "faq_precio_85": "a confirmar",
   "faq_precio_100": "a confirmar",
-  "precio_pool_usd": "15",
-  "precio_consignacion_usd": "16",
-  "precio_venta_directa_ars": "37.500",
+  "precio_pool_usd": "14",
+  "precio_consignacion_usd": "18",
+  "precio_venta_directa_ars": "31.500",
   "tabla": [
     {
       "producto": "Piso SPC 4mm / m²",
       "mercado": "USD 20,50",
       "volum": "a confirmar + IVA",
-      "ahorro": "20–35%"
+      "ahorro": "—"
     },
     {
       "producto": "Revestimiento WPC / m²",
@@ -63,6 +63,6 @@
     "facebook": "",
     "tiktok": ""
   },
-  "mep_referencia": 1545,
+  "mep_referencia": 1490,
   "curva_precio_final": false
 }
