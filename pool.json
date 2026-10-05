@@ -8,8 +8,8 @@
   "fecha_cierre": "a confirmar",
   "fecha_inicio": "oct 2026",
   "fecha_entrega": "ene 2027",
-  "descuento": "20 a 35%",
-  "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm). Abril 2026.",
+  "descuento": "",
+  "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC de 4 mm + IXPE + capa de desgaste de 0,5 mm). Abril 2026.",
   "precio_volum": "a confirmar",
   "fee_reserva": "100",
   "faq_precio_85": "a confirmar",
@@ -63,5 +63,6 @@
     "facebook": "",
     "tiktok": ""
   },
-  "mep_referencia": 1545
+  "mep_referencia": 1545,
+  "curva_precio_final": false
 }

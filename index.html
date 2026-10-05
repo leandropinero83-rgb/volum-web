@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="VOLUM agrupa la demanda de obras chicas y medianas para importar pisos vinílicos SPC directo de fábrica, sin intermediarios ni showroom.">
+<meta name="theme-color" content="#0b0b0b">
+<meta property="og:title" content="VOLUM. Pisos vinílicos SPC directo de fábrica">
+<meta property="og:description" content="Compra agrupada de materiales para obra, al precio de fábrica.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0b'/%3E%3Ccircle cx='32' cy='32' r='14' fill='none' stroke='%23e35205' stroke-width='9'/%3E%3C/svg%3E">
 <title>VOLUM · Pisos vinílicos SPC directo de fábrica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -774,9 +779,25 @@
   @media (min-width: 1500px) { .z-group a { font-size: 17px; } .z-group h3 { font-size: 14px; } }
 
   /* ===== Corte: imagen del fabricante ===== */
-  .corte-img { margin: 32px 0 0; background: #fff; border-radius: 8px; overflow: hidden; }
+  .corte-img { margin: 32px 0 0; background: #262626; border: 1px solid #2c2c2c; border-radius: 8px; overflow: hidden; }
   .corte-img img { display: block; width: 100%; height: auto; }
   @media (min-width: 900px) { .corte-img { margin-top: 48px; } }
+
+  /* ===== Auditoría: contraste, espaciado y líneas ===== */
+  .ticker-tab.active { color: #ff6a1f; }
+  .ticker-contact { background: #cf4a00; }
+  .ticker-contact:hover { background: #e35205; }
+  @media (min-width: 900px) {
+    .compare, .producto, .how, .pool, .about {
+      border-top: 0;
+      background-image: linear-gradient(#2c2c2c, #2c2c2c);
+      background-repeat: no-repeat;
+      background-position: 32px 0;
+      background-size: calc(100% - 64px) 1px;
+    }
+    .pool { padding-top: 72px; padding-bottom: 72px; }
+    .compare { grid-template-rows: auto 1fr auto; }
+  }
 </style>
 </head>
 <body>
@@ -784,7 +805,7 @@
 <header>
   <a class="logo" href="#top">V<span>O</span>LUM</a>
   <nav><button id="menuBtn" aria-label="Menú" aria-expanded="false" aria-controls="menuPanel">&#9776;</button></nav>
-  <div class="nav-row" id="navRow">
+  <div class="nav-row" id="navRow" role="navigation" aria-label="Secciones">
     <a href="#precios">Precios</a>
     <a href="#compare">Comparativa</a>
     <a href="#producto">Producto</a>
@@ -795,10 +816,10 @@
   <a class="hdr-cta" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM">Escribinos</a>
   <div class="menu-panel" id="menuPanel">
     <a href="#precios">Precios</a>
-    <a href="#compare">Dónde nos situamos</a>
-    <a href="#producto">El producto</a>
+    <a href="#compare">Comparativa</a>
+    <a href="#producto">Producto</a>
     <a href="#how">Cómo funciona</a>
-    <a href="#pool">Pool y participación</a>
+    <a href="#pool">Pool</a>
     <a href="#about">Quiénes somos</a>
     <a class="menu-wa" href="https://wa.me/5491164875889?text=Hola%21+Quiero+saber+m%C3%A1s+sobre+VOLUM">Escribinos por WhatsApp</a>
   </div>
@@ -825,7 +846,7 @@
 
 <section class="compare" id="compare">
   <h2>Análisis de precio: dónde nos situamos.</h2>
-  <p class="sub">Relevamiento de 200 publicaciones con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm) frente al precio VOLUM.</p>
+  <p class="sub">Relevamiento de 200 publicaciones con especificación equivalente (SPC de 4 mm + IXPE + capa de desgaste de 0,5 mm) frente al precio VOLUM.</p>
   <div class="curve-wrap" id="curveWrap"></div>
   <div class="compare-source" id="compareSource"></div>
 </section>
@@ -837,7 +858,7 @@
     <figcaption>Muestras de la línea del fabricante. Los colores de la primera tanda se confirman antes de abrir el pool.</figcaption>
   </figure>
   <figure class="corte-img">
-    <img src="corte.jpg" alt="Corte del piso SPC con sus capas, de arriba hacia abajo: acabado UV, capa de desgaste transparente, capa decorativa, núcleo SPC y base" width="1170" height="445" loading="lazy" decoding="async">
+    <img src="corte.jpg" data-alt="corte.png,corte.PNG,corte.jpeg" onerror="var a=(this.dataset.alt||'').split(',');var n=a.shift();this.dataset.alt=a.join(',');if(n){this.src=n;}" alt="Capas del piso SPC, de arriba hacia abajo: acabado UV, capa de desgaste transparente, lámina decorativa, núcleo rígido SPC y manta base IXPE" width="1400" height="700" loading="lazy" decoding="async">
   </figure>
   <div class="corte">
     <div class="corte-left">
@@ -846,19 +867,19 @@
     <div class="corte-text">
       <ol class="capas">
         <li><b>Acabado UV</b><span>Protege la superficie de rayones y manchas.</span></li>
-        <li><b>Capa de desgaste, 0,5 mm</b><span>Transparente. Es la que se gasta con el uso: a más espesor, más vida útil.</span></li>
-        <li><b>Capa decorativa</b><span>La veta de madera impresa que ves en cada color.</span></li>
-        <li><b>Núcleo SPC</b><span>Piedra y PVC prensados. Rígido, estable con los cambios de temperatura y no absorbe agua.</span></li>
-        <li><b>Base IXPE, 1 mm</b><span>Viene incorporada al piso: amortigua el paso y el ruido, y no hace falta comprar manto aparte.</span></li>
+        <li><b>Capa de desgaste transparente, 0,5 mm</b><span>Es la que se gasta con el uso: a más espesor, más vida útil.</span></li>
+        <li><b>Lámina decorativa</b><span>La veta de madera impresa que ves en cada color.</span></li>
+        <li><b>Núcleo rígido SPC</b><span>Piedra y PVC prensados. Rígido, estable con los cambios de temperatura y no absorbe agua.</span></li>
+        <li><b>Manta base IXPE, 1 mm</b><span>Viene incorporada al piso: amortigua el paso y el ruido, y no hace falta comprar manto aparte.</span></li>
       </ol>
-      <p class="corte-nota">Esquema ilustrativo, sin escala.</p>
+      <p class="corte-nota">Imagen ilustrativa, sin escala.</p>
     </div>
   </div>
   <div class="ficha">
     <div class="ficha-item"><span>Pieza</span><b>1525 × 230 mm</b></div>
     <div class="ficha-item"><span>Espesor</span><b>4 mm + 1 mm de base</b></div>
     <div class="ficha-item"><span>Instalación</span><b>Click, sistema Unilin</b></div>
-    <div class="ficha-item"><span>Superficie</span><b>Con relieve (embossed)</b></div>
+    <div class="ficha-item"><span>Superficie</span><b>Con relieve</b></div>
     <div class="ficha-item"><span>Caja</span><b>6 piezas, 2,1 m²</b></div>
   </div>
 </section>
@@ -949,7 +970,7 @@
       slides.push({
         tab: "Pool", label: "Precio pool" + PRICE_TAG, value: priceTxt("USD", data.precio_pool_usd), unit: isNum(data.precio_pool_usd) ? "/ m² sin IVA" : "",
         short: "Sumás tus m² a la demanda. Cuando se completa el container, comprás al precio de fábrica.",
-        long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: ~3 meses (fabricación + tránsito + aduana).",
+        long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: unos 3 meses (fabricación + tránsito + aduana).",
         waText: "Hola! Quiero sumarme al pool de VOLUM"
       });
     }
@@ -964,7 +985,7 @@
     if (data.precio_venta_directa_ars) {
       slides.push({
         tab: "Venta directa", label: "Venta directa al público" + PRICE_TAG, value: priceTxt("ARS", data.precio_venta_directa_ars), unit: isNum(data.precio_venta_directa_ars) ? "/ m² c/IVA" : "",
-        short: "Comprás directo para tu obra o reventa, con entrega inmediata sobre el stock disponible.",
+        short: "Comprás directo para tu obra, con entrega cuando llega el container.",
         waText: "Hola! Quiero comprar directo a VOLUM"
       });
     }
@@ -1026,7 +1047,7 @@
         // El precio final está en pesos con IVA: se pasa a USD sin IVA para poder marcarlo en la misma escala.
         const ars = parseFloat(String(fullData.precio_venta_directa_ars).replace(/\./g, '').replace(',', '.'));
         const mep = parseFloat(fullData.mep_referencia) || 1545;
-        if (!isNaN(ars)) {
+        if (!isNaN(ars) && fullData.curva_precio_final !== false) {
           const usd = ars / 1.21 / mep;
           const usdTxt = usd.toFixed(1).replace('.', ',');
           renderCompare(fullData, usdTxt, 'VOLUM Venta directa',
@@ -1242,9 +1263,9 @@
         { t: "Sumás tu obra", d: "Nos contás cuántos m² necesitás. No hay compromiso de compra todavía — solo estás en la cuenta." },
         { t: "Se completa el container", d: "Cuando la demanda junta suficiente volumen, cerramos el pedido al fabricante al precio de fábrica." },
         { t: "Pagás tu parte", d: "Confirmás tu lugar con el pago de tus metros. Ahí sí el pedido queda en firme." },
-        { t: "Llega y retirás", d: "El container llega a Buenos Aires (fabricación + tránsito + aduana: ~3 meses) y coordinamos la entrega." }
+        { t: "Llega y retirás", d: "El container llega a Buenos Aires (fabricación + tránsito + aduana: unos 3 meses) y coordinamos la entrega." }
       ],
-      long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: ~3 meses (fabricación + tránsito + aduana)."
+      long: "El pool junta la demanda de varias obras chicas y medianas para llenar un container completo. Cerramos el pedido a fábrica recién cuando se cubren los metros necesarios. Tu pago confirma tu lugar: el pedido no sale hasta estar cubierto. Tiempo estimado desde el cierre del pool hasta la entrega: unos 3 meses (fabricación + tránsito + aduana)."
     },
     {
       tab: "Consignación",
@@ -1260,8 +1281,8 @@
       tab: "Venta directa",
       steps: [
         { t: "Nos contás tu necesidad", d: "Cuántos m² y para cuándo los necesitás." },
-        { t: "Confirmamos stock", d: "Te decimos si hay disponible para entrega inmediata." },
-        { t: "Pagás y coordinamos entrega", d: "Sin esperar a que se complete ningún pool — es venta directa sobre lo que ya tenemos." }
+        { t: "Reservamos tus metros", d: "Te confirmamos cantidad, color y fecha estimada de entrega." },
+        { t: "Pagás y coordinamos la entrega", d: "Una vez que el container llega a Buenos Aires." }
       ],
       long: null
     }
@@ -1385,7 +1406,7 @@
   });
 
   // Copia de respaldo de pool.json: se usa solo si no se puede leer el archivo vivo.
-  const FALLBACK = {"pool_nombre": "Próximo pool", "metros": 2127, "metros_total": 3127, "metros_base": 1000, "metros_reservados": 0, "participantes": 0, "fecha_cierre": "a confirmar", "fecha_inicio": "oct 2026", "fecha_entrega": "ene 2027", "descuento": "20 a 35%", "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC 4mm + IXPE + wear layer 0.5mm). Abril 2026.", "precio_volum": "a confirmar", "fee_reserva": "100", "faq_precio_85": "a confirmar", "faq_precio_100": "a confirmar", "precio_pool_usd": "15", "precio_consignacion_usd": "16", "precio_venta_directa_ars": "37.500", "tabla": [{"producto": "Piso SPC 4mm / m²", "mercado": "USD 20,50", "volum": "a confirmar + IVA", "ahorro": "20–35%"}, {"producto": "Revestimiento WPC / m²", "mercado": "USD 18,00", "volum": "Próximo pool", "ahorro": "—"}, {"producto": "Cerradura smart / u.", "mercado": "USD 85,00", "volum": "Próximo pool", "ahorro": "—"}], "comparativa": [{"ref": "Minorista promedio", "precio": "19,83"}, {"ref": "Pisarás (volumen)", "precio": "18,18"}, {"ref": "Multimart", "precio": "17,77"}, {"ref": "Mercado promedio", "precio": "16,94"}], "participacion_minima": "a confirmar", "precio_estado": "de referencia"};
+  const FALLBACK = {"pool_nombre": "Próximo pool", "metros": 2127, "metros_total": 3127, "metros_base": 1000, "metros_reservados": 0, "participantes": 0, "fecha_cierre": "a confirmar", "fecha_inicio": "oct 2026", "fecha_entrega": "ene 2027", "descuento": "", "descuento_fuente": "Estimación basada en 200 relevamientos de MercadoLibre con especificación equivalente (SPC de 4 mm + IXPE + capa de desgaste de 0,5 mm). Abril 2026.", "precio_volum": "a confirmar", "fee_reserva": "100", "faq_precio_85": "a confirmar", "faq_precio_100": "a confirmar", "precio_pool_usd": "15", "precio_consignacion_usd": "16", "precio_venta_directa_ars": "37.500", "tabla": [{"producto": "Piso SPC 4mm / m²", "mercado": "USD 20,50", "volum": "a confirmar + IVA", "ahorro": "20–35%"}, {"producto": "Revestimiento WPC / m²", "mercado": "USD 18,00", "volum": "Próximo pool", "ahorro": "—"}, {"producto": "Cerradura smart / u.", "mercado": "USD 85,00", "volum": "Próximo pool", "ahorro": "—"}], "comparativa": [{"ref": "Minorista promedio", "precio": "19,83"}, {"ref": "Pisarás (volumen)", "precio": "18,18"}, {"ref": "Multimart", "precio": "17,77"}, {"ref": "Mercado promedio", "precio": "16,94"}], "participacion_minima": "a confirmar", "precio_estado": "de referencia", "legal": "", "redes": {"instagram": "https://www.instagram.com/volum_pools", "facebook": "", "tiktok": ""}, "mep_referencia": 1545, "curva_precio_final": false};
 
   function renderAll(data) {
     fullData = data;
